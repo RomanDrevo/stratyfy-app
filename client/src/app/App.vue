@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav v-if="currentUser" class="navbar navbar-expand navbar-dark bg-dark">
+        <nav class="navbar navbar-expand navbar-dark bg-dark">
             <div class="navbar-nav">
                 <router-link to="/" class="nav-item nav-link">Home</router-link>
 <!--                <a @click="logout" class="nav-item nav-link">Logout</a>-->

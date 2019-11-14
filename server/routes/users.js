@@ -17,8 +17,6 @@ router.get('/me', auth, async (req, res) => {
 });
 
 router.get('/', admin, async (req, res) => {
-  console.log('--req.body: ', req.body);
-  // console.log('--cookies: ', res.cookies);
   const users = await User.find();
   res.send(users);
 });
@@ -34,8 +32,6 @@ router.post('/', async (req, res) => {
   const salt = await bcrypt.genSalt(10);
   user.password = await bcrypt.hash(user.password, salt);
 
-  console.log('--user: ', user);
-
   await user.save();
 
   res.send({ user: _.pick(user, ['_id', 'email']), message: `User ${req.body.email} has been created.` });
@@ -50,6 +46,16 @@ router.post('/delete', async (req, res) => {
   await user.delete();
 
   res.status(200).send({ message: `User ${req.body.user.email} has been deleted.` });
+});
+
+
+
+
+router.put('/', async (req, res) => {
+
+  const user = await User.findOneAndUpdate({ email: req.body.email }, { email: req.body.newEmail }, { useFindAndModify: false, new: true });
+
+  res.status(200).send({ user, message: `User ${user.email} has been edited.` });
 });
 
 module.exports = router;

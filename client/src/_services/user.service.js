@@ -21,9 +21,15 @@ function removeUser(user) {
   return axios_based.post('/users/delete', { user });
 }
 
+function editUser(user) {
+  console.log('user------', user);
+  return axios_based.put('/users', user);
+}
+
 export const userService = {
   getAll,
   getById,
   createUser,
   removeUser,
+  editUser,
 };

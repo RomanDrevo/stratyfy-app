@@ -6,36 +6,82 @@
         <div>
             <div class="form-group">
               <h2>Users list: </h2>
-
               <ul class="list-group">
-                <li class="list-group-item" v-for="(user, i) in usersList">
+                <li class="list-group-item" v-for="user in usersList">
                   <div>{{user.email}}</div>
-                  <button @click="removeUser(user, i)" type="button" class="btn btn-danger btn-sm">Remove</button>
+                  <button @click="removeUser(user)" type="button" class="btn btn-danger btn-sm">
+                    Remove
+                  </button>
+                  <button @click="editUser(user)" type="button" class="btn btn-info btn-sm">
+                    Edit
+                  </button>
                 </li>
               </ul>
             </div>
           <div v-if="message" class="alert alert-info">{{message}}</div>
 
-          <h2>Add user: </h2>
-          <form @submit.prevent="onSubmit">
+          <h2 v-if="!selectedUser">Add user: </h2>
+          <form v-if="!selectedUser" @submit.prevent="onSubmit">
             <div class="form-group">
               <label htmlFor="username">Username</label>
-              <input type="text" v-model.trim="$v.username.$model" name="username" class="form-control" :class="{ 'is-invalid': submitted && $v.username.$error }" />
-              <div v-if="submitted && !$v.username.required" class="invalid-feedback">Username is required</div>
+              <input
+                type="text"
+                v-model.trim="$v.username.$model"
+                name="username" class="form-control"
+                :class="{ 'is-invalid': submitted && $v.username.$error }"
+              />
+              <div v-if="submitted && !$v.username.required" class="invalid-feedback">
+                Username is required
+              </div>
             </div>
             <div class="form-group">
               <label htmlFor="password">Password</label>
-              <input type="password" v-model.trim="$v.password.$model" name="password" class="form-control" :class="{ 'is-invalid': submitted && $v.password.$error }" />
-              <div v-if="submitted && !$v.password.required" class="invalid-feedback">Password is required</div>
+              <input
+                type="password"
+                v-model.trim="$v.password.$model"
+                name="password"
+                class="form-control"
+                :class="{ 'is-invalid': submitted && $v.password.$error }"
+              />
+              <div v-if="submitted && !$v.password.required" class="invalid-feedback">
+                Password is required
+              </div>
             </div>
             <div class="form-group">
               <button class="btn btn-primary" :disabled="loading">
                 <span class="spinner-border spinner-border-sm" v-show="loading"></span>
-                <span>Create</span>
+                <span>Create user</span>
               </button>
             </div>
             <div v-if="error" class="alert alert-danger">{{error}}</div>
           </form>
+
+          <h2 v-if="selectedUser">Edit user: </h2>
+          <form v-if="selectedUser">
+            <div class="form-group">
+              <label htmlFor="username">Username</label>
+              <input
+                type="text"
+                v-model.trim="$v.username.$model"
+                name="username" class="form-control"
+                :class="{ 'is-invalid': submitted && $v.username.$error }"
+              />
+              <div v-if="submitted && !$v.username.required" class="invalid-feedback">
+                Username is required
+              </div>
+            </div>
+
+
+            <div class="form-group">
+              <button @click="onEdit" class="btn btn-primary btn-info" :disabled="loading">
+                <span class="spinner-border spinner-border-sm" v-show="loading"></span>
+                <span>Update user</span>
+              </button>
+            </div>
+            <div v-if="error" class="alert alert-danger">{{error}}</div>
+          </form>
+
+
         </div>
     </div>
 </template>
@@ -63,6 +109,7 @@ export default {
       loading: false,
       error: '',
       message: '',
+      selectedUser: null,
     };
   },
   validations: {
@@ -89,9 +136,6 @@ export default {
     },
   },
   methods: {
-    getToCrud() {
-      router.push('/users');
-    },
     onSubmit() {
       this.submitted = true;
 
@@ -118,7 +162,7 @@ export default {
         });
     },
 
-    removeUser(user, i) {
+    removeUser(user) {
       this.loading = true;
       userService.removeUser(user)
         .then((res) => {
@@ -126,6 +170,27 @@ export default {
             this.loading = false;
             this.usersList = this.usersList.filter(x => x._id !== user._id);
             this.message = res.data.message;
+          }
+        },
+        (error) => {
+          this.error = error;
+          this.loading = false;
+        });
+    },
+
+    editUser(user) {
+      this.selectedUser = user;
+    },
+    onEdit() {
+      this.loading = true;
+      userService.editUser({ ...this.selectedUser, newEmail: this.username })
+        .then((res) => {
+          if (res.status === 200 && res.data) {
+            console.log('--data:- ', res.data);
+            this.loading = false;
+            this.message = res.data.message;
+            userService.getAll().then(users => this.usersList = users.data);
+            this.selectedUser = null;
           }
         },
         (error) => {
