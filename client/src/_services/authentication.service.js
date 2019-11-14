@@ -9,7 +9,9 @@ export const currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.ge
 
 
 export const getCurrentUser = () => {
-  return localStorage.getItem('currentUser');
+  const user =  localStorage.getItem('currentUser');
+  console.log("CURR USER:", JSON.parse(user));
+  return JSON.parse(user)
 
 }
 

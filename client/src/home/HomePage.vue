@@ -19,12 +19,12 @@
 
 <script>
 import { userService, authenticationService } from '@/_services';
-import {Role} from "../_helpers/role";
+import {ROLE} from "../_helpers/role";
 
 export default {
     data () {
         return {
-            currentUser: authenticationService.currentUserValue,
+            currentUser: authenticationService.getCurrentUser(),
             userFromApi: null,
           interval: null
         };
@@ -39,7 +39,7 @@ export default {
   },
   computed: {
     isAdmin () {
-      return this.currentUser && this.currentUser.role === Role.Admin;
+      return this.currentUser && this.currentUser.user.isAdmin === ROLE.admin;
     }
   },
 };

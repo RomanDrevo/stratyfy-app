@@ -21,7 +21,7 @@
 
 <script>
 import { authenticationService } from '@/_services';
-import { router, Role } from '@/_helpers';
+import { router, ROLE } from '@/_helpers';
 
 export default {
     name: 'app',
@@ -31,9 +31,9 @@ export default {
         };
     },
     computed: {
-        isAdmin () {
-            return this.currentUser && this.currentUser.role === Role.Admin;
-        }
+      isAdmin () {
+        return this.currentUser && this.currentUser.user.isAdmin === ROLE.admin;
+      }
     },
     created () {
         authenticationService.currentUser.subscribe(x => this.currentUser = x);
