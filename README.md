@@ -1,3 +1,3 @@
 # stratyfy-app
-Run client: yarn run start
-Run server: node index.js
+Run client in client dir: yarn run start
+Run server in server dir: node index.js
