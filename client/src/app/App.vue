@@ -34,9 +34,9 @@ export default {
       return this.currentUser && this.currentUser.isAdmin;
     },
   },
-  created() {
-    authenticationService.currentUser.subscribe(x => this.currentUser = x);
-  },
+  // created() {
+  //   authenticationService.currentUser.subscribe(x => this.currentUser = x);
+  // },
   methods: {
     logout() {
       authenticationService.logout();

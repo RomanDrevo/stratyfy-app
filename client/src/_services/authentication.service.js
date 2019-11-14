@@ -5,7 +5,7 @@ import { router } from '@/_helpers';
 // import config from 'config';
 
 
-export const currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('currentUser')));
+// export const currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('currentUser')));
 
 
 export const getCurrentUser = () => {
@@ -17,7 +17,7 @@ export const getCurrentUser = () => {
 const login = (email, password) => axios_based.post('/auth', { email, password }).then((res) => {
   // store user details and token in local storage to keep user logged in between page refreshes
   localStorage.setItem('currentUser', JSON.stringify(res.data));
-  currentUserSubject.next(res.data);
+  // currentUserSubject.next(res.data);
 
   return res.data;
 });
@@ -25,7 +25,7 @@ const login = (email, password) => axios_based.post('/auth', { email, password }
 function logout() {
   // remove user from local storage to log user out
   localStorage.removeItem('currentUser');
-  currentUserSubject.next(null);
+  // currentUserSubject.next(null);
 }
 
 const validateIsLoggedIn = () => {
@@ -39,8 +39,8 @@ const validateIsLoggedIn = () => {
 export const authenticationService = {
   login,
   logout,
-  currentUser: currentUserSubject.asObservable(),
-  get currentUserValue() { return currentUserSubject.value; },
+  // currentUser: currentUserSubject.asObservable(),
+  // get currentUserValue() { return currentUserSubject.value; },
   getCurrentUser,
   validateIsLoggedIn,
 };
