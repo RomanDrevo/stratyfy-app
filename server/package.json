@@ -9,9 +9,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "mdSeed": {
-    "seedersFolder": "./seeders"
-  },
   "dependencies": {
     "bcrypt": "^3.0.6",
     "config": "^1.29.4",
