@@ -9,8 +9,6 @@ const cors = require('../middleware/cors');
 
 router.post('/', cors, async (req, res) => {
 
-  console.log("----here")
-
   const { error } = validate(req.body); 
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -21,7 +19,9 @@ router.post('/', cors, async (req, res) => {
   if (!validPassword) return res.status(400).send('Invalid email or password.');
 
   const token = user.generateAuthToken();
-  res.send(token);
+  // res.send(token);
+  res.header('x-auth-token', token).send(_.pick(user, ['_id', 'email']));
+
 });
 
 function validate(req) {

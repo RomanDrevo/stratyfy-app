@@ -24,6 +24,6 @@
     "lodash": "^4.17.4",
     "mongoose": "^5.0.2",
     "mongoose-data-seed": "^2.1.4",
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.4"
   }
 }

@@ -1,10 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-
 import { authenticationService } from '@/_services';
-import { Role } from '@/_helpers';
 import HomePage from '@/home/HomePage';
-import AdminPage from '@/admin/AdminPage';
 import LoginPage from '@/login/LoginPage';
 
 Vue.use(Router);
@@ -16,11 +13,6 @@ export const router = new Router({
             path: '/', 
             component: HomePage, 
             meta: { authorize: [] } 
-        },
-        { 
-            path: '/admin', 
-            component: AdminPage, 
-            meta: { authorize: [Role.Admin] } 
         },
         { 
             path: '/login', 
@@ -35,7 +27,7 @@ export const router = new Router({
 router.beforeEach((to, from, next) => {
     // redirect to login page if not logged in and trying to access a restricted page
     const { authorize } = to.meta;
-    const currentUser = authenticationService.currentUserValue;
+    const currentUser = authenticationService.getCurrentUser();
 
     if (authorize) {
         if (!currentUser) {

@@ -1,9 +1,5 @@
 <template>
     <div>
-        <div class="alert alert-info">
-            <strong>Normal User</strong> - U: user P: user<br />
-            <strong>Administrator</strong> - U: admin P: admin
-        </div>
         <h2>Login</h2>
         <form @submit.prevent="onSubmit">
             <div class="form-group">
@@ -32,6 +28,7 @@ import { required } from 'vuelidate/lib/validators';
 
 import { router } from '@/_helpers';
 import { authenticationService } from '@/_services';
+import {userService} from "../_services";
 
 export default {
     data () {
@@ -56,6 +53,7 @@ export default {
 
         // get return url from route parameters or default to '/'
         this.returnUrl = this.$route.query.returnUrl || '/';
+
     },
     methods: {
         onSubmit () {
@@ -69,8 +67,7 @@ export default {
 
             this.loading = true;
             authenticationService.login(this.username, this.password)
-                .then(
-                    user => router.push(this.returnUrl),
+                .then(res => router.push(this.returnUrl),
                     error => {
                         this.error = error;
                         this.loading = false;

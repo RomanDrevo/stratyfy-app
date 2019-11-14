@@ -1,12 +1,12 @@
 <template>
     <div>
-<!--        <nav v-if="currentUser" class="navbar navbar-expand navbar-dark bg-dark">-->
-<!--            <div class="navbar-nav">-->
-<!--                <router-link to="/" class="nav-item nav-link">Home</router-link>-->
-<!--                <router-link v-if="isAdmin" to="/admin" class="nav-item nav-link">Admin</router-link>-->
-<!--                <a @click="logout" class="nav-item nav-link">Logout</a>-->
-<!--            </div>-->
-<!--        </nav>-->
+        <nav v-if="currentUser" class="navbar navbar-expand navbar-dark bg-dark">
+            <div class="navbar-nav">
+                <router-link to="/" class="nav-item nav-link">Home</router-link>
+                <router-link v-if="isAdmin" to="/admin" class="nav-item nav-link">Admin</router-link>
+                <a @click="logout" class="nav-item nav-link">Logout</a>
+            </div>
+        </nav>
         <div class="jumbotron">
             <div class="container">
                 <div class="row">

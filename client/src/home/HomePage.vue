@@ -29,7 +29,8 @@ export default {
         };
     },
     created () {
-        userService.getById(this.currentUser.id).then(user => this.userFromApi = user);
+      console.log("--curr user: ", this.currentUser)
+        // userService.getById(this.currentUser.id).then(user => this.userFromApi = user);
     },
   computed: {
     isAdmin () {
