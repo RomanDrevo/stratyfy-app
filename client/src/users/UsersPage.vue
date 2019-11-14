@@ -117,9 +117,7 @@ export default {
     password: { required },
   },
   created() {
-    console.log('--curr user: ', this.currentUser);
     this.interval = setInterval(authenticationService.validateIsLoggedIn, 3000);
-    // setTimeout(authenticationService.logout, 20 * 1000);
     if (this.currentUser) {
       userService.getAll().then(users => this.usersList = users.data);
     }
@@ -186,7 +184,6 @@ export default {
       userService.editUser({ ...this.selectedUser, newEmail: this.username })
         .then((res) => {
           if (res.status === 200 && res.data) {
-            console.log('--data:- ', res.data);
             this.loading = false;
             this.message = res.data.message;
             userService.getAll().then(users => this.usersList = users.data);

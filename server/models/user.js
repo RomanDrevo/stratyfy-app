@@ -1,5 +1,3 @@
-
-const config = require('config');
 const Joi = require('joi');
 const mongoose = require('mongoose');
 
@@ -21,9 +19,6 @@ const userSchema = new mongoose.Schema({
   isAdmin: Boolean,
 });
 
-// userSchema.methods.generateAuthToken = function () {
-//   return jwt.sign({ _id: this._id, isAdmin: this.isAdmin }, makeToken(100));
-// };
 
 const User = mongoose.model('User', userSchema);
 

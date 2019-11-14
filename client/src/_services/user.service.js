@@ -1,4 +1,3 @@
-import config from 'config';
 import axios_based from '../_helpers/axios-base';
 
 
@@ -9,7 +8,6 @@ function getAll() {
 
 function getById(id) {
   return axios_based.get('/users/me');
-  // .then(handleResponse);
 }
 
 function createUser(email, password) {
@@ -17,12 +15,10 @@ function createUser(email, password) {
 }
 
 function removeUser(user) {
-  console.log('--userId: ', user);
   return axios_based.post('/users/delete', { user });
 }
 
 function editUser(user) {
-  console.log('user------', user);
   return axios_based.put('/users', user);
 }
 

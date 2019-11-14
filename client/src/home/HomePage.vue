@@ -34,12 +34,8 @@ export default {
     };
   },
   created() {
-    console.log('--curr user: ', this.currentUser);
     this.interval = setInterval(authenticationService.validateIsLoggedIn, 3000);
-    // setTimeout(authenticationService.logout, 60 * 1000);
-    // if (this.currentUser) {
-    //   userService.getAll();
-    // }
+    setTimeout(authenticationService.logout, 60 * 1000);
   },
   destroyed() {
     clearInterval(this.interval);

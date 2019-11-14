@@ -1,11 +1,7 @@
-const jwt = require('jsonwebtoken');
-const config = require('config');
 const bcrypt = require('bcrypt');
 const _ = require('lodash');
-const mongoose = require('mongoose');
 const express = require('express');
 const { User, validate } = require('../models/user');
-const cors = require('../middleware/cors');
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
 
@@ -49,11 +45,10 @@ router.post('/delete', async (req, res) => {
 });
 
 
-
-
 router.put('/', async (req, res) => {
-
-  const user = await User.findOneAndUpdate({ email: req.body.email }, { email: req.body.newEmail }, { useFindAndModify: false, new: true });
+  const user = await User.findOneAndUpdate(
+    { email: req.body.email }, { email: req.body.newEmail }, { useFindAndModify: false, new: true },
+  );
 
   res.status(200).send({ user, message: `User ${user.email} has been edited.` });
 });

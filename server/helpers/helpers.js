@@ -9,5 +9,4 @@ function makeToken(length) {
 }
 
 
-// console.log(makeToken(5));
 module.exports = makeToken;

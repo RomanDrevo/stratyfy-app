@@ -1,12 +1,9 @@
-const jwt = require('jsonwebtoken');
-const config = require('config');
 const bcrypt = require('bcrypt');
 const { User } = require('../models/user');
 
 
 module.exports = async function (req, res, next) {
   try {
-
     const user = await User.findOne(req.user._id).select('-password');
 
     // const token = req.header('x-auth-token');
