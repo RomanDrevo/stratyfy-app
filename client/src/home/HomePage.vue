@@ -25,13 +25,18 @@ export default {
     data () {
         return {
             currentUser: authenticationService.currentUserValue,
-            userFromApi: null
+            userFromApi: null,
+          interval: null
         };
     },
     created () {
       console.log("--curr user: ", this.currentUser)
         // userService.getById(this.currentUser.id).then(user => this.userFromApi = user);
+      this.interval = setInterval(authenticationService.validateIsLoggedIn, 3000)
     },
+  destroyed(){
+    clearInterval(this.interval)
+  },
   computed: {
     isAdmin () {
       return this.currentUser && this.currentUser.role === Role.Admin;

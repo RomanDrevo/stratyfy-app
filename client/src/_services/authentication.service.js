@@ -1,15 +1,16 @@
 import { BehaviorSubject } from 'rxjs';
 import axios_based from "../_helpers/axios-base";
+import { router } from '@/_helpers';
 
-import config from 'config';
+// import config from 'config';
 
 
 export const currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('currentUser')));
 
 
 export const getCurrentUser = () => {
-  const user = localStorage.getItem('currentUser');
-  return user
+  return localStorage.getItem('currentUser');
+
 }
 
 const login = (email, password) => {
@@ -20,7 +21,7 @@ const login = (email, password) => {
     localStorage.setItem('currentUser', JSON.stringify(res.data));
     currentUserSubject.next(res.data);
 
-    // setTimeout(() => localStorage.removeItem('currentUser'), 5000)
+    setTimeout(() => localStorage.removeItem('currentUser'), 20*1000)
 
     return res.data;
   });
@@ -32,12 +33,23 @@ function logout() {
   currentUserSubject.next(null);
 }
 
+const validateIsLoggedIn = () =>{
+
+    const user = localStorage.getItem('currentUser');
+    console.log("---USER: ", user)
+    if(!user){
+      router.push("/login")
+    }
+
+}
+
 export const authenticationService = {
     login,
     logout,
     currentUser: currentUserSubject.asObservable(),
     get currentUserValue () { return currentUserSubject.value },
-  getCurrentUser
+  getCurrentUser,
+  validateIsLoggedIn
 };
 
 
