@@ -1,12 +1,13 @@
-const auth = require('../middleware/auth');
-const cors = require('../middleware/cors');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const bcrypt = require('bcrypt');
 const _ = require('lodash');
-const {User, validate} = require('../models/user');
 const mongoose = require('mongoose');
 const express = require('express');
+const { User, validate } = require('../models/user');
+const cors = require('../middleware/cors');
+const auth = require('../middleware/auth');
+
 const router = express.Router();
 
 router.get('/me', auth, async (req, res) => {
@@ -20,7 +21,7 @@ router.get('/', auth, async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  const { error } = validate(req.body); 
+  const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
   let user = await User.findOne({ email: req.body.email });
@@ -30,7 +31,7 @@ router.post('/', async (req, res) => {
   const salt = await bcrypt.genSalt(10);
   user.password = await bcrypt.hash(user.password, salt);
 
-  console.log("--user: ", user)
+  console.log('--user: ', user);
 
   await user.save();
 
@@ -38,4 +39,4 @@ router.post('/', async (req, res) => {
   res.header('x-auth-token', token).send(_.pick(user, ['_id', 'email']));
 });
 
-module.exports = router; 
+module.exports = router;

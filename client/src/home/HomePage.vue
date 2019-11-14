@@ -1,13 +1,13 @@
 <template>
     <div>
         <h1>Home</h1>
-        <p>Your role is: <strong>{{currentUser.role}}</strong>.</p>
+        <p>Your role is: <strong>{{role}}</strong>.</p>
         <p>This page can be accessed by all authenticated users.</p>
         <div>
 
             <div class="form-group">
                 <button class="btn btn-primary">
-                    <span>A - all</span>
+                    <span>A - all users</span>
                 </button>
                 <button class="btn btn-primary" :disabled="!isAdmin">
                     <span>A - admin only</span>
@@ -18,15 +18,17 @@
 </template>
 
 <script>
-import { userService, authenticationService } from '@/_services';
-import {ROLE} from "../_helpers/role";
+import {authenticationService } from '@/_services';
+import {ROLE} from "../_helpers/role"
 
 export default {
     data () {
         return {
             currentUser: authenticationService.getCurrentUser(),
             userFromApi: null,
-          interval: null
+          interval: null,
+          admin: ROLE.admin,
+          user: ROLE.user
         };
     },
     created () {
@@ -39,7 +41,10 @@ export default {
   },
   computed: {
     isAdmin () {
-      return this.currentUser && this.currentUser.user.isAdmin === ROLE.admin;
+      return this.currentUser && this.currentUser.user.isAdmin;
+    },
+    role (){
+      return this.currentUser && this.currentUser.user.isAdmin ? ROLE.admin : ROLE.user
     }
   },
 };

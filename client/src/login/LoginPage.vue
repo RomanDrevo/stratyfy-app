@@ -52,7 +52,7 @@ export default {
         }
 
         // get return url from route parameters or default to '/'
-        this.returnUrl = this.$route.query.returnUrl || '/';
+        this.returnUrl = this.$route.query.returnUrl || '/'
 
     },
     methods: {

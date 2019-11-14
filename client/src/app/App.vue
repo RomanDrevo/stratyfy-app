@@ -3,8 +3,7 @@
         <nav v-if="currentUser" class="navbar navbar-expand navbar-dark bg-dark">
             <div class="navbar-nav">
                 <router-link to="/" class="nav-item nav-link">Home</router-link>
-                <router-link v-if="isAdmin" to="/admin" class="nav-item nav-link">Admin</router-link>
-                <a @click="logout" class="nav-item nav-link">Logout</a>
+<!--                <a @click="logout" class="nav-item nav-link">Logout</a>-->
             </div>
         </nav>
         <div class="jumbotron">
@@ -21,7 +20,7 @@
 
 <script>
 import { authenticationService } from '@/_services';
-import { router, ROLE } from '@/_helpers';
+import { router } from '@/_helpers';
 
 export default {
     name: 'app',
@@ -32,7 +31,7 @@ export default {
     },
     computed: {
       isAdmin () {
-        return this.currentUser && this.currentUser.user.isAdmin === ROLE.admin;
+        return this.currentUser && this.currentUser.user.isAdmin;
       }
     },
     created () {

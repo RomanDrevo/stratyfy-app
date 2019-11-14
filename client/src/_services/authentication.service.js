@@ -1,5 +1,5 @@
 import { BehaviorSubject } from 'rxjs';
-import axios_based from "../_helpers/axios-base";
+import axios_based from '../_helpers/axios-base';
 import { router } from '@/_helpers';
 
 // import config from 'config';
@@ -9,25 +9,21 @@ export const currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.ge
 
 
 export const getCurrentUser = () => {
-  const user =  localStorage.getItem('currentUser');
-  console.log("CURR USER:", JSON.parse(user));
-  return JSON.parse(user)
+  const user = localStorage.getItem('currentUser');
+  console.log('CURR USER:', JSON.parse(user));
+  return JSON.parse(user);
+};
 
-}
+const login = (email, password) => axios_based.post('/auth', { email, password }).then((res) => {
+  // store user details and token in local storage to keep user logged in between page refreshes
+  console.log('--token: ', res.data);
+  localStorage.setItem('currentUser', JSON.stringify(res.data));
+  currentUserSubject.next(res.data);
 
-const login = (email, password) => {
+  setTimeout(() => localStorage.removeItem('currentUser'), 60 * 1000);
 
-  return axios_based.post("/auth", { email, password }).then(res => {
-    // store user details and token in local storage to keep user logged in between page refreshes
-    console.log("--token: ", res.data)
-    localStorage.setItem('currentUser', JSON.stringify(res.data));
-    currentUserSubject.next(res.data);
-
-    setTimeout(() => localStorage.removeItem('currentUser'), 20*1000)
-
-    return res.data;
-  });
-}
+  return res.data;
+});
 
 function logout() {
   // remove user from local storage to log user out
@@ -35,25 +31,19 @@ function logout() {
   currentUserSubject.next(null);
 }
 
-const validateIsLoggedIn = () =>{
-
-    const user = localStorage.getItem('currentUser');
-    console.log("---USER: ", user)
-    if(!user){
-      router.push("/login")
-    }
-
-}
-
-export const authenticationService = {
-    login,
-    logout,
-    currentUser: currentUserSubject.asObservable(),
-    get currentUserValue () { return currentUserSubject.value },
-  getCurrentUser,
-  validateIsLoggedIn
+const validateIsLoggedIn = () => {
+  const user = localStorage.getItem('currentUser');
+  console.log('---USER: ', user);
+  if (!user) {
+    router.push('/login');
+  }
 };
 
-
-
-
+export const authenticationService = {
+  login,
+  logout,
+  currentUser: currentUserSubject.asObservable(),
+  get currentUserValue() { return currentUserSubject.value; },
+  getCurrentUser,
+  validateIsLoggedIn,
+};
