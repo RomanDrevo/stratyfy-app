@@ -38,8 +38,18 @@ router.post('/', async (req, res) => {
 
   await user.save();
 
-  // const token = user.generateAuthToken();
-  res.send(_.pick(user, ['_id', 'email']));
+  res.send({ user: _.pick(user, ['_id', 'email']), message: `User ${req.body.email} has been created.` });
+});
+
+
+router.post('/delete', async (req, res) => {
+  const user = await User.findById(req.body.user._id);
+
+  if (!user) return res.status(400).send('No record with this email.');
+
+  await user.delete();
+
+  res.status(200).send({ message: `User ${req.body.user.email} has been deleted.` });
 });
 
 module.exports = router;

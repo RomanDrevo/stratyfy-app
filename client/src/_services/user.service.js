@@ -13,13 +13,17 @@ function getById(id) {
 }
 
 function createUser(email, password) {
-  console.log('--email: ', email);
-  console.log('--password: ', password);
   return axios_based.post('/users', { email, password });
+}
+
+function removeUser(user) {
+  console.log('--userId: ', user);
+  return axios_based.post('/users/delete', { user });
 }
 
 export const userService = {
   getAll,
   getById,
   createUser,
+  removeUser,
 };

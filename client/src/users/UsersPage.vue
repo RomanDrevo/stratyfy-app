@@ -8,10 +8,13 @@
               <h2>Users list: </h2>
 
               <ul class="list-group">
-                <li class="list-group-item" v-for="user in usersList">{{user.email}}</li>
+                <li class="list-group-item" v-for="(user, i) in usersList">
+                  <div>{{user.email}}</div>
+                  <button @click="removeUser(user, i)" type="button" class="btn btn-danger btn-sm">Remove</button>
+                </li>
               </ul>
             </div>
-
+          <div v-if="message" class="alert alert-info">{{message}}</div>
 
           <h2>Add user: </h2>
           <form @submit.prevent="onSubmit">
@@ -59,6 +62,7 @@ export default {
       submitted: false,
       loading: false,
       error: '',
+      message: '',
     };
   },
   validations: {
@@ -100,12 +104,28 @@ export default {
       this.loading = true;
       userService.createUser(this.username, this.password)
         .then((res) => {
-          console.log('--newUser: ', res);
           if (res.data) {
             this.loading = false;
-            this.usersList = [...this.usersList, res.data];
+            this.usersList = [...this.usersList, res.data.user];
             this.username = '';
             this.password = '';
+            this.message = res.data.message;
+          }
+        },
+        (error) => {
+          this.error = error;
+          this.loading = false;
+        });
+    },
+
+    removeUser(user, i) {
+      this.loading = true;
+      userService.removeUser(user)
+        .then((res) => {
+          if (res.status === 200 && res.data) {
+            this.loading = false;
+            this.usersList = this.usersList.filter(x => x._id !== user._id);
+            this.message = res.data.message;
           }
         },
         (error) => {
