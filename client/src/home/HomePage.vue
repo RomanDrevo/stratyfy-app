@@ -20,6 +20,7 @@
 <script>
 import { authenticationService } from '@/_services';
 import { ROLE } from '../_helpers/role';
+import { userService } from '../_services';
 
 export default {
   data() {
@@ -36,16 +37,19 @@ export default {
     // userService.getById(this.currentUser.id).then(user => this.userFromApi = user);
     this.interval = setInterval(authenticationService.validateIsLoggedIn, 3000);
     setTimeout(authenticationService.logout, 20 * 1000);
+    if (this.currentUser) {
+      userService.getAll();
+    }
   },
   destroyed() {
     clearInterval(this.interval);
   },
   computed: {
     isAdmin() {
-      return this.currentUser && this.currentUser.user.isAdmin;
+      return this.currentUser && this.currentUser.isAdmin;
     },
     role() {
-      return this.currentUser && this.currentUser.user.isAdmin ? ROLE.admin : ROLE.user;
+      return this.currentUser && this.currentUser.isAdmin ? ROLE.admin : ROLE.user;
     },
   },
 };

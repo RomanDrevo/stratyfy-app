@@ -7,6 +7,7 @@ const express = require('express');
 const { User, validate } = require('../models/user');
 const cors = require('../middleware/cors');
 const auth = require('../middleware/auth');
+const admin = require('../middleware/admin');
 
 const router = express.Router();
 
@@ -15,7 +16,9 @@ router.get('/me', auth, async (req, res) => {
   res.send(user);
 });
 
-router.get('/', auth, async (req, res) => {
+router.get('/', admin, async (req, res) => {
+  console.log('--req.body: ', req.body);
+  // console.log('--cookies: ', res.cookies);
   const users = await User.find();
   res.send(users);
 });
@@ -35,8 +38,8 @@ router.post('/', async (req, res) => {
 
   await user.save();
 
-  const token = user.generateAuthToken();
-  res.header('x-auth-token', token).send(_.pick(user, ['_id', 'email']));
+  // const token = user.generateAuthToken();
+  res.send(_.pick(user, ['_id', 'email']));
 });
 
 module.exports = router;

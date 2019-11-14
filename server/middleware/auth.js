@@ -1,15 +1,23 @@
 const jwt = require('jsonwebtoken');
 const config = require('config');
+const bcrypt = require('bcrypt');
+const { User } = require('../models/user');
 
-module.exports = function (req, res, next) {
-  const token = req.header('x-auth-token');
-  if (!token) return res.status(401).send('Access denied. No token provided.');
 
+module.exports = async function (req, res, next) {
   try {
-    const decoded = jwt.verify(token, config.get('jwtPrivateKey'));
-    req.user = decoded;
+    // const decoded = jwt.verify(token, config.get('jwtPrivateKey'));
+    // req.user = decoded;
+    const user = await User.findOne(req.user._id).select('-password');
+
+    // const token = req.header('x-auth-token');
+    if (!user) return res.status(400).send('Invalid email or password');
+
+    const validPassword = await bcrypt.compare(req.body.password, user.password);
+
+    if (!validPassword) return res.status(400).send('Invalid email or password');
     next();
   } catch (ex) {
-    res.status(400).send('Invalid token.');
+    res.status(400).send('Invalid password.');
   }
 };

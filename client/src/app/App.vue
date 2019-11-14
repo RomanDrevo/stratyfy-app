@@ -31,7 +31,7 @@ export default {
   },
   computed: {
     isAdmin() {
-      return this.currentUser && this.currentUser.user.isAdmin;
+      return this.currentUser && this.currentUser.isAdmin;
     },
   },
   created() {

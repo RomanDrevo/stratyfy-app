@@ -8,6 +8,8 @@ const auth = require('./routes/auth');
 
 const app = express();
 const cors = require('cors');
+// const cookieParser = require('cookie-parser');
+
 
 if (!config.get('jwtPrivateKey')) {
   console.error('FATAL ERROR: jwtPrivateKey is not defined.');
@@ -24,13 +26,8 @@ app.use(express.json());
 app.use('/api/users', users);
 app.use('/api/auth', auth);
 
-// if (!server) {
-//   server = http.createServer(app);
-// }
-//
-// app.use(bodyParser.json({limit: '10mb', extended: true}))
-// app.use(bodyParser.urlencoded({limit: '10mb', extended: true}));
 
+// app.use(cookieParser());
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
