@@ -3,14 +3,14 @@
         <h2>Login</h2>
         <form @submit.prevent="onSubmit">
             <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" v-model.trim="$v.username.$model" name="username" class="form-control" :class="{ 'is-invalid': submitted && $v.username.$error }" />
-                <div v-if="submitted && !$v.username.required" class="invalid-feedback">Username is required</div>
+              <label for="username">Username</label>
+              <input type="text" v-model.trim="$v.username.$model" name="username" class="form-control" :class="{ 'is-invalid': submitted && $v.username.$error }" />
+              <div v-if="submitted && !$v.username.required" class="invalid-feedback">Username is required</div>
             </div>
             <div class="form-group">
-                <label htmlFor="password">Password</label>
-                <input type="password" v-model.trim="$v.password.$model" name="password" class="form-control" :class="{ 'is-invalid': submitted && $v.password.$error }" />
-                <div v-if="submitted && !$v.password.required" class="invalid-feedback">Password is required</div>
+              <label htmlFor="password">Password</label>
+              <input type="password" v-model.trim="$v.password.$model" name="password" class="form-control" :class="{ 'is-invalid': submitted && $v.password.$error }" />
+              <div v-if="submitted && !$v.password.required" class="invalid-feedback">Password is required</div>
             </div>
             <div class="form-group">
                 <button class="btn btn-primary" :disabled="loading">
@@ -28,7 +28,6 @@ import { required } from 'vuelidate/lib/validators';
 
 import { router } from '@/_helpers';
 import { authenticationService } from '@/_services';
-import { userService } from '../_services';
 
 export default {
   data() {

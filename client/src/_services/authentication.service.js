@@ -16,12 +16,8 @@ export const getCurrentUser = () => {
 
 const login = (email, password) => axios_based.post('/auth', { email, password }).then((res) => {
   // store user details and token in local storage to keep user logged in between page refreshes
-  console.log('--token: ', res.data);
   localStorage.setItem('currentUser', JSON.stringify(res.data));
   currentUserSubject.next(res.data);
-
-  // setTimeout(() => localStorage.removeItem('currentUser'), 20 * 1000);
-  // setTimeout(() => localStorage.removeItem('currentUser'), 20 * 1000);
 
   return res.data;
 });

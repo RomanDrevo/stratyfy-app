@@ -6,8 +6,7 @@ const { User } = require('../models/user');
 
 module.exports = async function (req, res, next) {
   try {
-    // const decoded = jwt.verify(token, config.get('jwtPrivateKey'));
-    // req.user = decoded;
+
     const user = await User.findOne(req.user._id).select('-password');
 
     // const token = req.header('x-auth-token');

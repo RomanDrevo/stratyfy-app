@@ -20,7 +20,6 @@
 <script>
 import { authenticationService } from '@/_services';
 import { ROLE } from '../_helpers/role';
-import { userService } from '../_services';
 import { router } from '@/_helpers';
 
 
@@ -37,10 +36,10 @@ export default {
   created() {
     console.log('--curr user: ', this.currentUser);
     this.interval = setInterval(authenticationService.validateIsLoggedIn, 3000);
-    setTimeout(authenticationService.logout, 20 * 1000);
-    if (this.currentUser) {
-      userService.getAll();
-    }
+    // setTimeout(authenticationService.logout, 60 * 1000);
+    // if (this.currentUser) {
+    //   userService.getAll();
+    // }
   },
   destroyed() {
     clearInterval(this.interval);
