@@ -23,25 +23,25 @@ import { authenticationService } from '@/_services';
 import { router } from '@/_helpers';
 
 export default {
-    name: 'app',
-    data () {
-        return {
-            currentUser: null
-        };
+  name: 'app',
+  data() {
+    return {
+      currentUser: null,
+    };
+  },
+  computed: {
+    isAdmin() {
+      return this.currentUser && this.currentUser.user.isAdmin;
     },
-    computed: {
-      isAdmin () {
-        return this.currentUser && this.currentUser.user.isAdmin;
-      }
+  },
+  created() {
+    authenticationService.currentUser.subscribe(x => this.currentUser = x);
+  },
+  methods: {
+    logout() {
+      authenticationService.logout();
+      router.push('/login');
     },
-    created () {
-        authenticationService.currentUser.subscribe(x => this.currentUser = x);
-    },
-    methods: {
-        logout () {
-            authenticationService.logout();
-            router.push('/login');
-        }
-    }
+  },
 };
 </script>

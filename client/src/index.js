@@ -8,7 +8,7 @@ import App from './app/App';
 Vue.use(Vuelidate);
 
 new Vue({
-    el: '#app',
-    router,
-    render: h => h(App)
+  el: '#app',
+  router,
+  render: h => h(App),
 });

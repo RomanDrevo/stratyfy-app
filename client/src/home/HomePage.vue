@@ -18,34 +18,34 @@
 </template>
 
 <script>
-import {authenticationService } from '@/_services';
-import {ROLE} from "../_helpers/role"
+import { authenticationService } from '@/_services';
+import { ROLE } from '../_helpers/role';
 
 export default {
-    data () {
-        return {
-            currentUser: authenticationService.getCurrentUser(),
-            userFromApi: null,
-          interval: null,
-          admin: ROLE.admin,
-          user: ROLE.user
-        };
-    },
-    created () {
-      console.log("--curr user: ", this.currentUser)
-        // userService.getById(this.currentUser.id).then(user => this.userFromApi = user);
-      this.interval = setInterval(authenticationService.validateIsLoggedIn, 3000)
-    },
-  destroyed(){
-    clearInterval(this.interval)
+  data() {
+    return {
+      currentUser: authenticationService.getCurrentUser(),
+      userFromApi: null,
+      interval: null,
+      admin: ROLE.admin,
+      user: ROLE.user,
+    };
+  },
+  created() {
+    console.log('--curr user: ', this.currentUser);
+    // userService.getById(this.currentUser.id).then(user => this.userFromApi = user);
+    this.interval = setInterval(authenticationService.validateIsLoggedIn, 3000);
+  },
+  destroyed() {
+    clearInterval(this.interval);
   },
   computed: {
-    isAdmin () {
+    isAdmin() {
       return this.currentUser && this.currentUser.user.isAdmin;
     },
-    role (){
-      return this.currentUser && this.currentUser.user.isAdmin ? ROLE.admin : ROLE.user
-    }
+    role() {
+      return this.currentUser && this.currentUser.user.isAdmin ? ROLE.admin : ROLE.user;
+    },
   },
 };
 </script>

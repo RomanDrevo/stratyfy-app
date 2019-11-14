@@ -28,52 +28,50 @@ import { required } from 'vuelidate/lib/validators';
 
 import { router } from '@/_helpers';
 import { authenticationService } from '@/_services';
-import {userService} from "../_services";
+import { userService } from '../_services';
 
 export default {
-    data () {
-        return {
-            username: '',
-            password: '',
-            submitted: false,
-            loading: false,
-            returnUrl: '',
-            error: ''
-        };
-    },
-    validations: {
-      username: { required },
-      password: { required }
-    },
-    created () {
-        // redirect to home if already logged in
-        if (authenticationService.currentUserValue) { 
-            return router.push('/');
-        }
-
-        // get return url from route parameters or default to '/'
-        this.returnUrl = this.$route.query.returnUrl || '/'
-
-    },
-    methods: {
-        onSubmit () {
-            this.submitted = true;
-
-            // stop here if form is invalid
-            this.$v.$touch();
-            if (this.$v.$invalid) {
-                return;
-            }
-
-            this.loading = true;
-            authenticationService.login(this.username, this.password)
-                .then(res => router.push(this.returnUrl),
-                    error => {
-                        this.error = error;
-                        this.loading = false;
-                    }
-                );
-        }
+  data() {
+    return {
+      username: '',
+      password: '',
+      submitted: false,
+      loading: false,
+      returnUrl: '',
+      error: '',
+    };
+  },
+  validations: {
+    username: { required },
+    password: { required },
+  },
+  created() {
+    // redirect to home if already logged in
+    if (authenticationService.currentUserValue) {
+      return router.push('/');
     }
+
+    // get return url from route parameters or default to '/'
+    this.returnUrl = this.$route.query.returnUrl || '/';
+  },
+  methods: {
+    onSubmit() {
+      this.submitted = true;
+
+      // stop here if form is invalid
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        return;
+      }
+
+      this.loading = true;
+      authenticationService.login(this.username, this.password)
+        .then(res => router.push(this.returnUrl),
+          (error) => {
+            this.error = error;
+            this.loading = false;
+          });
+    },
+  },
 };
 </script>
