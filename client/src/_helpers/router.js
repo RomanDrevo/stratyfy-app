@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import { authenticationService } from '@/_services';
 import HomePage from '@/home/HomePage';
 import LoginPage from '@/login/LoginPage';
+import UsersPage from '@/users/UsersPage';
 
 Vue.use(Router);
 
@@ -17,6 +18,10 @@ export const router = new Router({
     {
       path: '/login',
       component: LoginPage,
+    },
+    {
+      path: '/users',
+      component: UsersPage,
     },
 
     // otherwise redirect to home

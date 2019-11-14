@@ -1,17 +1,12 @@
 <template>
     <div>
-        <h1>Home</h1>
+        <h1>Users</h1>
         <p>Your role is: <strong>{{role}}</strong>.</p>
-        <p>This page can be accessed by all authenticated users.</p>
+        <p>This page can be accessed by admin only.</p>
         <div>
 
             <div class="form-group">
-                <button class="btn btn-primary">
-                    <span>A. Dumb button for all users</span>
-                </button>
-                <button @click="getToCrud" class="btn btn-primary" :disabled="!isAdmin">
-                    <span>B. Get to CRUD (admin only)</span>
-                </button>
+                list
             </div>
         </div>
     </div>
