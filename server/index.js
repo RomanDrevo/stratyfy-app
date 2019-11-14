@@ -2,9 +2,10 @@ const config = require('config');
 const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
 const mongoose = require('mongoose');
+const express = require('express');
 const users = require('./routes/users');
 const auth = require('./routes/auth');
-const express = require('express');
+
 const app = express();
 const cors = require('cors');
 
@@ -33,4 +34,3 @@ app.use('/api/auth', auth);
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
-

@@ -20,7 +20,8 @@ const login = (email, password) => axios_based.post('/auth', { email, password }
   localStorage.setItem('currentUser', JSON.stringify(res.data));
   currentUserSubject.next(res.data);
 
-  setTimeout(() => localStorage.removeItem('currentUser'), 60 * 1000);
+  // setTimeout(() => localStorage.removeItem('currentUser'), 20 * 1000);
+  // setTimeout(() => localStorage.removeItem('currentUser'), 20 * 1000);
 
   return res.data;
 });

@@ -35,6 +35,7 @@ export default {
     console.log('--curr user: ', this.currentUser);
     // userService.getById(this.currentUser.id).then(user => this.userFromApi = user);
     this.interval = setInterval(authenticationService.validateIsLoggedIn, 3000);
+    setTimeout(authenticationService.logout, 20 * 1000);
   },
   destroyed() {
     clearInterval(this.interval);
