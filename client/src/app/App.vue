@@ -54,8 +54,11 @@
               <span>Login</span>
             </button>
           </div>
-          <div v-if="error" class="alert alert-danger">{{error}}</div>
+          <div v-if="$store.state.error" class="alert alert-danger">{{error}}</div>
         </form>
+
+<!--        <button @click="login('user@lala.com', '1234')">Login x</button>-->
+
       </modal>
 
 
@@ -64,9 +67,9 @@
 
 <script>
 import { required } from 'vuelidate/lib/validators';
+import { mapActions } from 'vuex';
 import { authenticationService } from '@/_services';
 import { router } from '@/_helpers';
-
 
 export default {
   name: 'app',
@@ -78,9 +81,9 @@ export default {
       submitted: false,
       loading: false,
       returnUrl: '',
-      error: '',
+      error: this.$store.state.error,
       interval: null,
-      x: this.$store.state.isLoginModalOpen
+      isLoggedIn: this.$store.state.isLoggedIn,
     };
   },
   validations: {
@@ -93,10 +96,10 @@ export default {
     },
   },
   created() {
-    const isLoggedIn = authenticationService.validateIsLoggedIn();
+    // const isLoggedIn = authenticationService.validateIsLoggedIn();
 
     setTimeout(() => {
-      if (!isLoggedIn) {
+      if (!this.isLoggedIn) {
         this.show();
       }
     }, 100);
@@ -105,6 +108,11 @@ export default {
     setTimeout(authenticationService.logout, 15 * 1000);
   },
   methods: {
+    ...mapActions([
+      'openLoginModal',
+      'closeLoginModal',
+      'login',
+    ]),
     logout() {
       authenticationService.logout();
       router.push('/login');
@@ -119,19 +127,19 @@ export default {
       }
 
       this.loading = true;
-      authenticationService.login(this.username, this.password)
-        .then((res) => {
-          if (res) {
-            this.loading = false;
-            this.username = '';
-            this.password = '';
-            this.hide();
-          }
-        },
-        (error) => {
-          this.error = error;
-          this.loading = false;
-        });
+      this.login({ email: this.username, password: this.password });
+      // .then((res) => {
+      //   if (res) {
+      //     this.loading = false;
+      //     this.username = '';
+      //     this.password = '';
+      //     this.hide();
+      //   }
+      // },
+      // (error) => {
+      //   this.error = error;
+      //   this.loading = false;
+      // });
     },
     show() {
       this.$modal.show('login-modal');
