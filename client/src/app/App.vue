@@ -79,6 +79,8 @@ export default {
       loading: false,
       returnUrl: '',
       error: '',
+      interval: null,
+      x: this.$store.state.isLoginModalOpen
     };
   },
   validations: {
@@ -98,6 +100,9 @@ export default {
         this.show();
       }
     }, 100);
+
+    this.interval = setInterval(authenticationService.validateIsLoggedIn, 3000);
+    setTimeout(authenticationService.logout, 15 * 1000);
   },
   methods: {
     logout() {
@@ -115,11 +120,18 @@ export default {
 
       this.loading = true;
       authenticationService.login(this.username, this.password)
-        .then(res => router.push(this.returnUrl),
-          (error) => {
-            this.error = error;
+        .then((res) => {
+          if (res) {
             this.loading = false;
-          });
+            this.username = '';
+            this.password = '';
+            this.hide();
+          }
+        },
+        (error) => {
+          this.error = error;
+          this.loading = false;
+        });
     },
     show() {
       this.$modal.show('login-modal');
@@ -127,6 +139,9 @@ export default {
     hide() {
       this.$modal.hide('login-modal');
     },
+  },
+  destroyed() {
+    clearInterval(this.interval);
   },
 };
 </script>

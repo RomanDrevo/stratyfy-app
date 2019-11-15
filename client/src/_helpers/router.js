@@ -44,6 +44,7 @@ router.beforeEach((to, from, next) => {
     // check if route is restricted by role
     if (authorize.length && !authorize.includes(currentUser.role)) {
       // role not authorised so redirect to home page
+      console.log("=here")
       return next({ path: '/' });
     }
   }

@@ -29,7 +29,7 @@ export default {
     return {
       currentUser: authenticationService.getCurrentUser(),
       userFromApi: null,
-      interval: null,
+      // interval: null,
       admin: ROLE.admin,
       user: ROLE.user,
     };
@@ -45,12 +45,12 @@ export default {
     // // get return url from route parameters or default to '/'
     // this.returnUrl = this.$route.query.returnUrl || '/';
 
-    this.interval = setInterval(authenticationService.validateIsLoggedIn, 3000);
-    // setTimeout(authenticationService.logout, 60 * 1000);
+    // this.interval = setInterval(authenticationService.validateIsLoggedIn, 3000);
+    // // setTimeout(authenticationService.logout, 60 * 1000);
   },
-  destroyed() {
-    clearInterval(this.interval);
-  },
+  // destroyed() {
+  //   clearInterval(this.interval);
+  // },
   computed: {
     isAdmin() {
       return this.currentUser && this.currentUser.isAdmin;

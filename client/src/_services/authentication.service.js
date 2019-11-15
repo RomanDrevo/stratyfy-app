@@ -18,26 +18,30 @@ const login = (email, password) => axios_based.post('/auth', { email, password }
 });
 
 function logout() {
+  console.log('--logging out !');
   // remove user from local storage to log user out
   localStorage.removeItem('currentUser');
 }
 
+const showLoginModal = () => console.log('OPENING modal!') || true;
+
 const validateIsLoggedIn = () => {
   const user = localStorage.getItem('currentUser');
-  // if (!user) {
-  //   // router.push('/login');
-  //
-  // }
+  if (!user) {
+    // router.push('/login');
+    console.log('--no user, open modal!');
+    showLoginModal();
+    return false
+  }
+  console.log('--user! ', user);
   return !!user;
 };
 
-
-const showLoginModal = () => true
 
 export const authenticationService = {
   login,
   logout,
   getCurrentUser,
   validateIsLoggedIn,
-  showLoginModal
+  showLoginModal,
 };

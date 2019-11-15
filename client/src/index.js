@@ -4,6 +4,7 @@ import VModal from 'vue-js-modal'
 
 import { router } from './_helpers';
 import App from './app/App';
+import store from './store/store';
 
 Vue.use(VModal)
 
@@ -13,4 +14,5 @@ new Vue({
   el: '#app',
   router,
   render: h => h(App),
+  store,
 });
