@@ -5,6 +5,7 @@ import VModal from 'vue-js-modal'
 import { router } from './_helpers';
 import App from './app/App';
 import store from './store/store';
+// import './css/style.css'
 
 Vue.use(VModal)
 

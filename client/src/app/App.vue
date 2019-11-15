@@ -1,5 +1,12 @@
+<style scoped>
+  .xxx {
+    border: 3px dashed red!important;
+  }
+</style>
+
+
 <template>
-    <div>
+    <div class="xxx">
         <nav class="navbar navbar-expand navbar-dark bg-dark">
             <div class="navbar-nav">
                 <router-link to="/" class="nav-item nav-link">Home</router-link>
@@ -19,7 +26,7 @@
       <modal name="login-modal" :draggable="false" :clickToClose="false">
         <h2>Login</h2>
         <form @submit.prevent="onSubmit">
-          <div class="form-group">
+          <div  class="form-group">
             <label for="username">Username</label>
             <input
               type="text"
@@ -153,3 +160,5 @@ export default {
   },
 };
 </script>
+
+
