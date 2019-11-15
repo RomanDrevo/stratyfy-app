@@ -6,7 +6,7 @@
         <div>
 
             <div class="form-group">
-                <button class="btn btn-primary">
+                <button @click="show" class="btn btn-primary">
                     <span>A. Dumb button for all users</span>
                 </button>
                 <button @click="getToCrud" class="btn btn-primary" :disabled="!isAdmin">
@@ -14,6 +14,7 @@
                 </button>
             </div>
         </div>
+
     </div>
 </template>
 
@@ -33,9 +34,19 @@ export default {
       user: ROLE.user,
     };
   },
+
   created() {
+
+    // redirect to home if already logged in
+    // if (authenticationService.currentUserValue) {
+    //   return router.push('/');
+    // }
+    //
+    // // get return url from route parameters or default to '/'
+    // this.returnUrl = this.$route.query.returnUrl || '/';
+
     this.interval = setInterval(authenticationService.validateIsLoggedIn, 3000);
-    setTimeout(authenticationService.logout, 60 * 1000);
+    // setTimeout(authenticationService.logout, 60 * 1000);
   },
   destroyed() {
     clearInterval(this.interval);
@@ -51,6 +62,9 @@ export default {
   methods: {
     getToCrud() {
       router.push('/users');
+    },
+    show() {
+      this.$modal.show('hello-world');
     },
   },
 };

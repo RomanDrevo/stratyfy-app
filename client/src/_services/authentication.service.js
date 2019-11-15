@@ -24,14 +24,20 @@ function logout() {
 
 const validateIsLoggedIn = () => {
   const user = localStorage.getItem('currentUser');
-  if (!user) {
-    router.push('/login');
-  }
+  // if (!user) {
+  //   // router.push('/login');
+  //
+  // }
+  return !!user;
 };
+
+
+const showLoginModal = () => true
 
 export const authenticationService = {
   login,
   logout,
   getCurrentUser,
   validateIsLoggedIn,
+  showLoginModal
 };

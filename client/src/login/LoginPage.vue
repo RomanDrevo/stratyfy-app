@@ -20,6 +20,9 @@
             </div>
             <div v-if="error" class="alert alert-danger">{{error}}</div>
         </form>
+
+
+
     </div>
 </template>
 
@@ -70,6 +73,12 @@ export default {
             this.error = error;
             this.loading = false;
           });
+    },
+    show() {
+      this.$modal.show('hello-world');
+    },
+    hide() {
+      this.$modal.hide('hello-world');
     },
   },
 };

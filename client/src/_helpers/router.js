@@ -15,10 +15,10 @@ export const router = new Router({
       component: HomePage,
       meta: { authorize: [] },
     },
-    {
-      path: '/login',
-      component: LoginPage,
-    },
+    // {
+    //   path: '/login',
+    //   component: LoginPage,
+    // },
     {
       path: '/users',
       component: UsersPage,
@@ -37,7 +37,8 @@ router.beforeEach((to, from, next) => {
   if (authorize) {
     if (!currentUser) {
       // not logged in so redirect to login page with the return url
-      return next({ path: '/login', query: { returnUrl: to.path } });
+      // return next({ path: '/login', query: { returnUrl: to.path } });
+      authenticationService.showLoginModal();
     }
 
     // check if route is restricted by role
