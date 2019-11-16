@@ -1,7 +1,5 @@
 <style>
-  .login-form {
-    /*padding: 40px;*/
-  }
+
   .v--modal-box{
     height: auto!important;
     padding: 40px!important;
@@ -14,7 +12,6 @@
         <nav class="navbar navbar-expand navbar-dark bg-dark">
             <div class="navbar-nav">
                 <router-link to="/" class="nav-item nav-link">Home</router-link>
-<!--                <div @click="logout" class="nav-item nav-link">Logout</div>-->
                 <a @click="logout" class="nav-item nav-link">Logout</a>
             </div>
         </nav>

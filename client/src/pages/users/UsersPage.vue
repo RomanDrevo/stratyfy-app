@@ -91,7 +91,7 @@
 <script>
 import { required } from 'vuelidate/lib/validators';
 import { mapActions, mapGetters } from 'vuex';
-import { ROLE } from '../_helpers/role';
+import { ROLE } from '../../_helpers/role';
 
 
 export default {

@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { ROLE } from '../_helpers/role';
+import { ROLE } from '../../_helpers/role';
 import { router } from '@/_helpers';
 import { mapGetters } from 'vuex';
 
