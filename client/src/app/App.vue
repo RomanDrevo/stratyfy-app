@@ -14,8 +14,8 @@
         <nav class="navbar navbar-expand navbar-dark bg-dark">
             <div class="navbar-nav">
                 <router-link to="/" class="nav-item nav-link">Home</router-link>
-                <div @click="logout" class="nav-item nav-link">Logout</div>
-<!--                <a @click="logout" class="nav-item nav-link">Logout</a>-->
+<!--                <div @click="logout" class="nav-item nav-link">Logout</div>-->
+                <a @click="logout" class="nav-item nav-link">Logout</a>
             </div>
         </nav>
         <div class="jumbotron">
@@ -23,10 +23,6 @@
                 <div class="row">
                     <div class="col-sm-6 offset-sm-3">
                         <router-view></router-view>
-                      <button @click="changeModalState">Toggle true</button>
-                      {{$store.state.counter}}
-                      {{$store.state.isTrue}}
-                      <button @click="increment">+</button>
                     </div>
                 </div>
             </div>
@@ -65,12 +61,12 @@
             </div>
           </div>
           <div class="form-group">
-            <button class="btn btn-primary" :disabled="$store.state.loading">
-              <span class="spinner-border spinner-border-sm" v-show="$store.state.loading"></span>
+            <button class="btn btn-primary" :disabled="loading">
+              <span class="spinner-border spinner-border-sm" v-show="loading"></span>
               <span>Login</span>
             </button>
           </div>
-          <div v-if="$store.state.error" class="alert alert-danger">{{$store.state.error}}</div>
+          <div v-if="error" class="alert alert-danger">{{error}}</div>
         </form>
 
 
@@ -83,22 +79,15 @@
 <script>
 import { required } from 'vuelidate/lib/validators';
 import { mapActions, mapGetters } from 'vuex';
-// import { authenticationService } from '@/_services';
-import { router } from '@/_helpers';
 
 export default {
   name: 'app',
   data() {
     return {
-      currentUser: this.$store.state.currUser,
       username: '',
       password: '',
       submitted: false,
-      // loading: false,
-      returnUrl: '',
-      // error: this.$store.state.error,
       interval: null,
-      // isLoggedIn: this.$store.state.isLoggedIn,
     };
   },
   validations: {
@@ -106,16 +95,10 @@ export default {
     password: { required },
   },
   computed: {
-    isAdmin() {
-      return this.currentUser && this.currentUser.isAdmin;
-    },
     isLoggedIn() {
       return this.$store.state.isLoggedIn;
     },
-    ...mapGetters(['isTrue', 'doubbleCounter'])
-    // isTrue() {
-    //   return this.$store.state.isTrue;
-    // },
+    ...mapGetters(['loading', 'error', 'currentUser']),
   },
   mounted() {
     // const isLoggedIn = authenticationService.validateIsLoggedIn();
@@ -147,15 +130,9 @@ export default {
   },
   methods: {
     ...mapActions([
-      'openLoginModal',
-      'closeLoginModal',
       'login',
       'logout',
-      // 'toggleTrue'
     ]),
-    changeModalState () {
-      this.$store.commit('toggleTrue')
-    },
     onSubmit() {
       this.submitted = true;
 
@@ -175,9 +152,6 @@ export default {
     hide() {
       this.$modal.hide('login-modal');
     },
-    increment(){
-      this.$store.commit('increment')
-    }
   },
   destroyed() {
     clearInterval(this.interval);

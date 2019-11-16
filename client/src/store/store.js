@@ -7,17 +7,16 @@ Vue.use(Vuex);
 
 const state = {
   isLoggedIn: !!localStorage.getItem('currentUser'),
-  currUser: null,
+  currUser: localStorage.getItem('currentUser') && JSON.parse(localStorage.getItem('currentUser')),
   loading: false,
   error: null,
-  localStorageUser: null,
-  isTrue: true,
-  counter: 0,
+  // localStorageUser: null,
 };
 
 const mutations = {
   setUser(state, payload) {
-    state.user = payload;
+    state.currUser = payload;
+    state.currUser = payload;
   },
   setLoadingStatus(state, payload) {
     state.loading = payload;
@@ -28,14 +27,6 @@ const mutations = {
   setLoginStatus(state, payload) {
     console.log('payload: ', payload);
     state.isLoggedIn = payload;
-  },
-  toggleTrue: (state) => {
-    console.log('---here!');
-    state.isTrue = !state.isTrue;
-    console.log('---state isTrue: ', state.isTrue);
-  },
-  increment: (state) => {
-    state.counter++;
   },
 };
 
@@ -53,7 +44,6 @@ const actions = {
       // store user details and token in local storage to keep user logged in between page refreshes
         localStorage.setItem('currentUser', JSON.stringify(res.data));
         context.commit('setUser', res.data);
-        localStorage.setItem('currentUser', JSON.stringify(res.data));
         context.commit('setLoadingStatus', false);
         context.commit('setLoginStatus', true);
       })
@@ -71,20 +61,14 @@ const actions = {
     context.commit('setLoadingStatus', true);
     localStorage.removeItem('currentUser');
     context.commit('setLoginStatus', false);
-    console.log('isLoggedIn: ', state.isLoggedIn);
     context.commit('setLoadingStatus', false);
   },
-
-  // toggleTrue(context) {
-  //   console.log("666");
-  //   // context.commit('toggleTrue');
-  //   state.isTrue = !state.isTrue;
-  // },
 };
 
 const getters = {
-  isTrue: state => state.isTrue,
-  doubbleCounter: state => state.counter * 2,
+  loading: state => state.loading,
+  error: state => state.error,
+  currentUser: state => state.currUser,
 };
 
 export default new Vuex.Store({
