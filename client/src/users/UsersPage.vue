@@ -13,7 +13,7 @@
                     <button @click="editUser(user)" type="button" class="btn btn-info btn-sm">
                       Edit
                     </button>
-                    <button @click="removeUser(user)" type="button" class="btn btn-danger btn-sm">
+                    <button @click="deleteUser(user)" type="button" class="btn btn-danger btn-sm">
                       Remove
                     </button>
                   </div>
@@ -130,10 +130,14 @@ export default {
     },
     ...mapGetters(['loading', 'error', 'currentUser', 'usersList', 'successMessage']),
   },
+  updated() {
+    console.log('--usersList: ', this.usersList);
+  },
   methods: {
     ...mapActions([
       'fetchUsers',
       'createUser',
+      'removeUser',
     ]),
     onSubmit() {
       this.submitted = true;
@@ -150,20 +154,8 @@ export default {
       this.password = '';
     },
 
-    removeUser(user) {
-      this.loading = true;
-      userService.removeUser(user)
-        .then((res) => {
-          if (res.status === 200 && res.data) {
-            this.loading = false;
-            this.usersList = this.usersList.filter(x => x._id !== user._id);
-            this.message = res.data.message;
-          }
-        },
-        (error) => {
-          this.error = error;
-          this.loading = false;
-        });
+    deleteUser(user) {
+      this.removeUser(user);
     },
 
     editUser(user) {

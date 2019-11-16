@@ -75,6 +75,28 @@ const actions = {
         context.commit('setLoadingStatus', false);
       });
   },
+
+  removeUser(context, user) {
+    context.commit('setLoadingStatus', true);
+
+    axios_based.post('/users/delete', { user })
+      .then((res) => {
+        if (res.status === 200 && res.data) {
+          context.commit('setLoadingStatus', false);
+
+          context.commit('removeUserFromList', res.data);
+
+          context.commit('setSuccessMessage', res.data.message);
+        }
+      })
+      .catch((e) => {
+        context.commit('setError', e);
+        context.commit('setUsersList', null);
+      })
+      .finally(() => {
+        context.commit('setLoadingStatus', false);
+      });
+  },
 };
 
 export default actions;

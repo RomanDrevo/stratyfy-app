@@ -21,5 +21,7 @@ export default {
   setSuccessMessage(state, payload) {
     state.successMessage = payload;
   },
-
+  removeUserFromList(state, payload) {
+    state.usersList = state.usersList.filter(x => x._id !== payload.userId);
+  },
 };

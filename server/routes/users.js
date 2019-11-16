@@ -41,7 +41,7 @@ router.post('/delete', async (req, res) => {
 
   await user.delete();
 
-  res.status(200).send({ message: `User ${req.body.user.email} has been deleted.` });
+  res.status(200).send({ userId: user._id, message: `User ${req.body.user.email} has been deleted.` });
 });
 
 

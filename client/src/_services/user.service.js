@@ -5,13 +5,13 @@ function getById(id) {
   return axios_based.get('/users/me');
 }
 
-function createUser(email, password) {
-  return axios_based.post('/users', { email, password });
-}
+// function createUser(email, password) {
+//   return axios_based.post('/users', { email, password });
+// }
 
-function removeUser(user) {
-  return axios_based.post('/users/delete', { user });
-}
+// function removeUser(user) {
+//   return axios_based.post('/users/delete', { user });
+// }
 
 function editUser(user) {
   return axios_based.put('/users', user);
@@ -19,7 +19,5 @@ function editUser(user) {
 
 export const userService = {
   getById,
-  createUser,
-  removeUser,
   editUser,
 };
