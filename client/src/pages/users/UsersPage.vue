@@ -23,66 +23,38 @@
             </div>
           <div v-if="successMessage" class="alert alert-info">{{successMessage}}</div>
 
-          <h2 v-if="!selectedUser">Add user: </h2>
-          <form v-if="!selectedUser" @submit.prevent="onSubmit">
-            <div class="form-group">
-              <label htmlFor="username">Username</label>
-              <input
-                type="text"
-                v-model.trim="$v.username.$model"
-                name="username" class="form-control"
-                :class="{ 'is-invalid': submitted && $v.username.$error }"
-              />
-              <div v-if="submitted && !$v.username.required" class="invalid-feedback">
-                Username is required
-              </div>
-            </div>
-            <div class="form-group">
-              <label htmlFor="password">Password</label>
-              <input
-                type="password"
-                v-model.trim="$v.password.$model"
-                name="password"
-                class="form-control"
-                :class="{ 'is-invalid': submitted && $v.password.$error }"
-              />
-              <div v-if="submitted && !$v.password.required" class="invalid-feedback">
-                Password is required
-              </div>
-            </div>
-            <div class="form-group">
-              <button class="btn btn-primary" :disabled="loading">
-                <span class="spinner-border spinner-border-sm" v-show="loading"></span>
-                <span>Create user</span>
-              </button>
-            </div>
-            <div v-if="error" class="alert alert-danger">{{error}}</div>
-          </form>
-
-          <h2 v-if="selectedUser">Edit user: </h2>
-          <form v-if="selectedUser">
-            <div class="form-group">
-              <label htmlFor="username">Username</label>
-              <input
-                type="text"
-                v-model.trim="$v.username.$model"
-                name="username" class="form-control"
-                :class="{ 'is-invalid': submitted && $v.username.$error }"
-              />
-              <div v-if="submitted && !$v.username.required" class="invalid-feedback">
-                Username is required
-              </div>
-            </div>
+          <AddUserForm />
 
 
-            <div class="form-group">
-              <button @click="onEdit" class="btn btn-primary btn-info" :disabled="loading">
-                <span class="spinner-border spinner-border-sm" v-show="loading"></span>
-                <span>Update user</span>
-              </button>
-            </div>
-            <div v-if="error" class="alert alert-danger">{{error}}</div>
-          </form>
+          <modal name="edit-user-modal" :draggable="false" :clickToClose="false">
+            <h2>Edit user: </h2>
+            <form>
+              <div class="form-group">
+                <label htmlFor="username">Email</label>
+                <input
+                  type="text"
+                  v-model.trim="$v.username.$model"
+                  name="username" class="form-control"
+                  :class="{ 'is-invalid': submitted && $v.username.$error }"
+                />
+                <div v-if="submitted && !$v.username.required" class="invalid-feedback">
+                  Username is required
+                </div>
+              </div>
+
+
+              <div class="form-group">
+                <button @click="onEdit" class="btn btn-primary btn-info" :disabled="loading">
+                  <span class="spinner-border spinner-border-sm" v-show="loading"></span>
+                  <span>Update user</span>
+                </button>
+              </div>
+              <div v-if="error" class="alert alert-danger">{{error}}</div>
+            </form>
+            <div v-if="successMessage" class="alert alert-info">{{successMessage}}</div>
+            <button class="btn btn-primary btn-sm" @click="hide">Close</button>
+          </modal>
+
 
         </div>
     </div>
@@ -92,9 +64,11 @@
 import { required } from 'vuelidate/lib/validators';
 import { mapActions, mapGetters } from 'vuex';
 import { ROLE } from '../../_helpers/role';
+import AddUserForm from './components/AddUserForm';
 
 
 export default {
+  components: { AddUserForm },
   data() {
     return {
       userFromApi: null,
@@ -104,7 +78,6 @@ export default {
       username: '',
       password: '',
       submitted: false,
-      // message: '',
       selectedUser: null,
     };
   },
@@ -121,6 +94,7 @@ export default {
     clearInterval(this.interval);
   },
   computed: {
+
     isAdmin() {
       return this.currentUser && this.currentUser.isAdmin;
     },
@@ -129,9 +103,7 @@ export default {
     },
     ...mapGetters(['loading', 'error', 'currentUser', 'usersList', 'successMessage']),
   },
-  // updated() {
-  //   console.log('--usersList: ', this.usersList);
-  // },
+
   methods: {
     ...mapActions([
       'fetchUsers',
@@ -160,21 +132,16 @@ export default {
 
     selectUser(user) {
       this.selectedUser = user;
+      this.show();
     },
     onEdit() {
       this.editUser({ ...this.selectedUser, newEmail: this.username });
-      // .then((res) => {
-      //   if (res.status === 200 && res.data) {
-      //     this.loading = false;
-      //     this.message = res.data.message;
-      //     userService.getAll().then(users => this.usersList = users.data);
-      //     this.selectedUser = null;
-      //   }
-      // },
-      // (error) => {
-      //   this.error = error;
-      //   this.loading = false;
-      // });
+    },
+    show() {
+      this.$modal.show('edit-user-modal');
+    },
+    hide() {
+      this.$modal.hide('edit-user-modal');
     },
   },
 

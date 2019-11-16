@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="currentUser">
         <h1>Home</h1>
         <p>Your role is: <strong>{{role}}</strong>.</p>
         <p>This page can be accessed by all authenticated users.</p>
@@ -32,7 +32,6 @@ export default {
   data() {
     return {
       userFromApi: null,
-      // interval: null,
       admin: ROLE.admin,
       user: ROLE.user,
     };

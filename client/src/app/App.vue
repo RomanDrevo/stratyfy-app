@@ -107,14 +107,9 @@ export default {
     }
   },
   updated() {
-    // const user = localStorage.getItem('currentUser');
-
     if (!this.$store.state.isLoggedIn && this.$modal) {
-      console.log('here1');
-
       this.show();
     } else {
-      console.log('here2');
       this.hide();
     }
   },

@@ -19,7 +19,6 @@ const actions = {
         context.commit('setLoginStatus', true);
       })
       .catch((e) => {
-        console.log('--e: ', e);
         context.commit('setError', e);
         context.commit('setUser', null);
       })
@@ -46,7 +45,6 @@ const actions = {
         context.commit('setLoadingStatus', false);
       })
       .catch((e) => {
-        console.log('--e: ', e);
         context.commit('setError', e);
         context.commit('setUsersList', null);
       })

@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import HomePage from '@/home/HomePage';
-import UsersPage from '@/users/UsersPage';
+import HomePage from '@/pages/home/HomePage';
+import UsersPage from '@/pages/users/UsersPage';
 // import state from '../store/store'
 import store from '../store/store';
 
