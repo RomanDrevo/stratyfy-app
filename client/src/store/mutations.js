@@ -12,4 +12,7 @@ export default {
   setLoginStatus(state, payload) {
     state.isLoggedIn = payload;
   },
+  setUsersList(state, payload) {
+    state.usersList = payload;
+  },
 };

@@ -7,11 +7,12 @@ import mutations from "./mutations";
 
 Vue.use(Vuex);
 
-const state = {
+export const state = {
   isLoggedIn: !!localStorage.getItem('currentUser'),
   currUser: localStorage.getItem('currentUser') && JSON.parse(localStorage.getItem('currentUser')),
   loading: false,
   error: null,
+  usersList: []
 };
 
 export default new Vuex.Store({

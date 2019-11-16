@@ -84,13 +84,13 @@
             <div v-if="error" class="alert alert-danger">{{error}}</div>
           </form>
 
-
         </div>
     </div>
 </template>
 
 <script>
 import { required } from 'vuelidate/lib/validators';
+import { mapActions, mapGetters } from 'vuex';
 import { authenticationService } from '@/_services';
 import { ROLE } from '../_helpers/role';
 import { userService } from '../_services';
@@ -99,17 +99,14 @@ import { userService } from '../_services';
 export default {
   data() {
     return {
-      // currentUser: authenticationService.getCurrentUser(),
       userFromApi: null,
       interval: null,
       admin: ROLE.admin,
       user: ROLE.user,
-      usersList: [],
+      // usersList: [],
       username: '',
       password: '',
       submitted: false,
-      loading: false,
-      error: '',
       message: '',
       selectedUser: null,
     };
@@ -120,8 +117,9 @@ export default {
   },
   created() {
     // this.interval = setInterval(authenticationService.validateIsLoggedIn, 3000);
-    if (!this.currentUser) {
-      userService.getAll().then(users => this.usersList = users.data);
+    if (this.currentUser) {
+      this.fetchUsers(this.currentUser);
+      // .then(users => this.usersList = users.data);
     }
   },
   destroyed() {
@@ -134,8 +132,12 @@ export default {
     role() {
       return this.currentUser && this.currentUser.isAdmin ? ROLE.admin : ROLE.user;
     },
+    ...mapGetters(['loading', 'error', 'currentUser', 'usersList']),
   },
   methods: {
+    ...mapActions([
+      'fetchUsers',
+    ]),
     onSubmit() {
       this.submitted = true;
 

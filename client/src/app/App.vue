@@ -108,13 +108,6 @@ export default {
     } else {
       this.hide();
     }
-    // setInterval(() => {
-    //   if (!this.currentUser) {
-    //     this.show();
-    //   }
-    // }, 200);
-
-    // this.interval = setInterval(authenticationService.validateIsLoggedIn, 3000);
   },
   updated() {
     // const user = localStorage.getItem('currentUser');

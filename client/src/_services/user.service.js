@@ -1,10 +1,10 @@
 import axios_based from '../_helpers/axios-base';
 
 
-function getAll() {
-  const user = JSON.parse(localStorage.getItem('currentUser'));
-  return axios_based.get('/users', { params: { user_id: user._id, isAdmin: user.isAdmin } });
-}
+// function getAll() {
+//   const user = JSON.parse(localStorage.getItem('currentUser'));
+//   return axios_based.get('/users', { params: { user_id: user._id, isAdmin: user.isAdmin } });
+// }
 
 function getById(id) {
   return axios_based.get('/users/me');
@@ -23,7 +23,6 @@ function editUser(user) {
 }
 
 export const userService = {
-  getAll,
   getById,
   createUser,
   removeUser,
