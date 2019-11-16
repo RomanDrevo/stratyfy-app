@@ -24,4 +24,10 @@ export default {
   removeUserFromList(state, payload) {
     state.usersList = state.usersList.filter(x => x._id !== payload.userId);
   },
+  editUser(state, user) {
+
+    const objIndex = state.usersList.findIndex((obj => obj._id === user._id));
+
+    state.usersList[objIndex].email = user.email
+  },
 };

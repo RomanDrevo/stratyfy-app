@@ -97,6 +97,29 @@ const actions = {
         context.commit('setLoadingStatus', false);
       });
   },
+
+
+  editUser(context, user) {
+    context.commit('setLoadingStatus', true);
+
+    axios_based.put('/users', user)
+      .then((res) => {
+        if (res.status === 200 && res.data) {
+          context.commit('setLoadingStatus', false);
+
+          context.commit('editUser', res.data.user);
+
+          context.commit('setSuccessMessage', res.data.message);
+        }
+      })
+      .catch((e) => {
+        context.commit('setError', e);
+        context.commit('setUsersList', null);
+      })
+      .finally(() => {
+        context.commit('setLoadingStatus', false);
+      });
+  },
 };
 
 export default actions;

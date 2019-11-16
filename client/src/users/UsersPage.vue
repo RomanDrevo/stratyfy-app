@@ -10,7 +10,7 @@
                 <li class="list-group-item" v-for="user in usersList">
                   <div>{{user.email}}</div>
                   <div>
-                    <button @click="editUser(user)" type="button" class="btn btn-info btn-sm">
+                    <button @click="selectUser(user)" type="button" class="btn btn-info btn-sm">
                       Edit
                     </button>
                     <button @click="deleteUser(user)" type="button" class="btn btn-danger btn-sm">
@@ -92,7 +92,6 @@
 import { required } from 'vuelidate/lib/validators';
 import { mapActions, mapGetters } from 'vuex';
 import { ROLE } from '../_helpers/role';
-import { userService } from '../_services';
 
 
 export default {
@@ -130,14 +129,15 @@ export default {
     },
     ...mapGetters(['loading', 'error', 'currentUser', 'usersList', 'successMessage']),
   },
-  updated() {
-    console.log('--usersList: ', this.usersList);
-  },
+  // updated() {
+  //   console.log('--usersList: ', this.usersList);
+  // },
   methods: {
     ...mapActions([
       'fetchUsers',
       'createUser',
       'removeUser',
+      'editUser',
     ]),
     onSubmit() {
       this.submitted = true;
@@ -158,24 +158,23 @@ export default {
       this.removeUser(user);
     },
 
-    editUser(user) {
+    selectUser(user) {
       this.selectedUser = user;
     },
     onEdit() {
-      this.loading = true;
-      userService.editUser({ ...this.selectedUser, newEmail: this.username })
-        .then((res) => {
-          if (res.status === 200 && res.data) {
-            this.loading = false;
-            this.message = res.data.message;
-            userService.getAll().then(users => this.usersList = users.data);
-            this.selectedUser = null;
-          }
-        },
-        (error) => {
-          this.error = error;
-          this.loading = false;
-        });
+      this.editUser({ ...this.selectedUser, newEmail: this.username });
+      // .then((res) => {
+      //   if (res.status === 200 && res.data) {
+      //     this.loading = false;
+      //     this.message = res.data.message;
+      //     userService.getAll().then(users => this.usersList = users.data);
+      //     this.selectedUser = null;
+      //   }
+      // },
+      // (error) => {
+      //   this.error = error;
+      //   this.loading = false;
+      // });
     },
   },
 
