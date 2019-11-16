@@ -29,25 +29,25 @@ export const router = new Router({
   ],
 });
 
-router.beforeEach((to, from, next) => {
-  // redirect to login page if not logged in and trying to access a restricted page
-  const { authorize } = to.meta;
-  const currentUser = authenticationService.getCurrentUser();
-
-  if (authorize) {
-    if (!currentUser) {
-      // not logged in so redirect to login page with the return url
-      // return next({ path: '/login', query: { returnUrl: to.path } });
-      authenticationService.showLoginModal();
-    }
-
-    // check if route is restricted by role
-    if (authorize.length && !authorize.includes(currentUser.role)) {
-      // role not authorised so redirect to home page
-      console.log("=here")
-      return next({ path: '/' });
-    }
-  }
-
-  next();
-});
+// router.beforeEach((to, from, next) => {
+//   // redirect to login page if not logged in and trying to access a restricted page
+//   const { authorize } = to.meta;
+//   const currentUser = authenticationService.getCurrentUser();
+//
+//   if (authorize) {
+//     if (!currentUser) {
+//       // not logged in so redirect to login page with the return url
+//       // return next({ path: '/login', query: { returnUrl: to.path } });
+//       authenticationService.showLoginModal();
+//     }
+//
+//     // check if route is restricted by role
+//     if (authorize.length && !authorize.includes(currentUser.role)) {
+//       // role not authorised so redirect to home page
+//       console.log("=here")
+//       return next({ path: '/' });
+//     }
+//   }
+//
+//   next();
+// });

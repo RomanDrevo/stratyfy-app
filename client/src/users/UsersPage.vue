@@ -9,12 +9,15 @@
               <ul class="list-group">
                 <li class="list-group-item" v-for="user in usersList">
                   <div>{{user.email}}</div>
-                  <button @click="removeUser(user)" type="button" class="btn btn-danger btn-sm">
-                    Remove
-                  </button>
-                  <button @click="editUser(user)" type="button" class="btn btn-info btn-sm">
-                    Edit
-                  </button>
+                  <div>
+                    <button @click="editUser(user)" type="button" class="btn btn-info btn-sm">
+                      Edit
+                    </button>
+                    <button @click="removeUser(user)" type="button" class="btn btn-danger btn-sm">
+                      Remove
+                    </button>
+                  </div>
+
                 </li>
               </ul>
             </div>
@@ -91,13 +94,12 @@ import { required } from 'vuelidate/lib/validators';
 import { authenticationService } from '@/_services';
 import { ROLE } from '../_helpers/role';
 import { userService } from '../_services';
-import { router } from '@/_helpers';
 
 
 export default {
   data() {
     return {
-      currentUser: authenticationService.getCurrentUser(),
+      // currentUser: authenticationService.getCurrentUser(),
       userFromApi: null,
       interval: null,
       admin: ROLE.admin,
@@ -117,8 +119,8 @@ export default {
     password: { required },
   },
   created() {
-    this.interval = setInterval(authenticationService.validateIsLoggedIn, 3000);
-    if (this.currentUser) {
+    // this.interval = setInterval(authenticationService.validateIsLoggedIn, 3000);
+    if (!this.currentUser) {
       userService.getAll().then(users => this.usersList = users.data);
     }
   },
@@ -199,3 +201,11 @@ export default {
 
 };
 </script>
+
+<style scoped>
+  .list-group-item{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+</style>

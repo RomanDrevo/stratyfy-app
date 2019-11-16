@@ -33,6 +33,10 @@ const actions = {
     context.commit('setLoginStatus', false);
     context.commit('setLoadingStatus', false);
   },
+
+  fetchUsers(){
+
+  }
 };
 
 export default actions;
