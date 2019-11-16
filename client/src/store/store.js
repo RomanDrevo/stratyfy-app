@@ -12,7 +12,8 @@ export const state = {
   currUser: localStorage.getItem('currentUser') && JSON.parse(localStorage.getItem('currentUser')),
   loading: false,
   error: null,
-  usersList: []
+  usersList: [],
+  successMessage: null
 };
 
 export default new Vuex.Store({

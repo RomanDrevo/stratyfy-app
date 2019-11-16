@@ -3,4 +3,5 @@ export default {
   error: state => state.error,
   currentUser: state => state.currUser,
   usersList: state => state.usersList,
+  successMessage: state => state.successMessage,
 };

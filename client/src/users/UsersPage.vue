@@ -21,7 +21,7 @@
                 </li>
               </ul>
             </div>
-          <div v-if="message" class="alert alert-info">{{message}}</div>
+          <div v-if="successMessage" class="alert alert-info">{{successMessage}}</div>
 
           <h2 v-if="!selectedUser">Add user: </h2>
           <form v-if="!selectedUser" @submit.prevent="onSubmit">
@@ -91,7 +91,6 @@
 <script>
 import { required } from 'vuelidate/lib/validators';
 import { mapActions, mapGetters } from 'vuex';
-import { authenticationService } from '@/_services';
 import { ROLE } from '../_helpers/role';
 import { userService } from '../_services';
 
@@ -103,11 +102,10 @@ export default {
       interval: null,
       admin: ROLE.admin,
       user: ROLE.user,
-      // usersList: [],
       username: '',
       password: '',
       submitted: false,
-      message: '',
+      // message: '',
       selectedUser: null,
     };
   },
@@ -116,10 +114,8 @@ export default {
     password: { required },
   },
   created() {
-    // this.interval = setInterval(authenticationService.validateIsLoggedIn, 3000);
     if (this.currentUser) {
       this.fetchUsers(this.currentUser);
-      // .then(users => this.usersList = users.data);
     }
   },
   destroyed() {
@@ -132,11 +128,12 @@ export default {
     role() {
       return this.currentUser && this.currentUser.isAdmin ? ROLE.admin : ROLE.user;
     },
-    ...mapGetters(['loading', 'error', 'currentUser', 'usersList']),
+    ...mapGetters(['loading', 'error', 'currentUser', 'usersList', 'successMessage']),
   },
   methods: {
     ...mapActions([
       'fetchUsers',
+      'createUser',
     ]),
     onSubmit() {
       this.submitted = true;
@@ -147,21 +144,10 @@ export default {
         return;
       }
 
-      this.loading = true;
-      userService.createUser(this.username, this.password)
-        .then((res) => {
-          if (res.data) {
-            this.loading = false;
-            this.usersList = [...this.usersList, res.data.user];
-            this.username = '';
-            this.password = '';
-            this.message = res.data.message;
-          }
-        },
-        (error) => {
-          this.error = error;
-          this.loading = false;
-        });
+      this.createUser({ email: this.username, password: this.password });
+
+      this.username = '';
+      this.password = '';
     },
 
     removeUser(user) {

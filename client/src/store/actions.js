@@ -1,5 +1,4 @@
 import axios_based from '../_helpers/axios-base';
-import state from './store';
 
 
 const actions = {
@@ -37,15 +36,34 @@ const actions = {
   },
 
   fetchUsers(context, user) {
-    console.log("-currUser", user)
-
     context.commit('setUsersList', []);
 
     context.commit('setLoadingStatus', true);
 
     axios_based.get('/users', { params: { user_id: user._id, isAdmin: user.isAdmin } })
-      .then(res => {
+      .then((res) => {
         context.commit('setUsersList', res.data);
+        context.commit('setLoadingStatus', false);
+      })
+      .catch((e) => {
+        console.log('--e: ', e);
+        context.commit('setError', e);
+        context.commit('setUsersList', null);
+      })
+      .finally(() => {
+        context.commit('setLoadingStatus', false);
+      });
+  },
+
+  createUser(context, data) {
+    const { email, password } = data;
+
+    context.commit('setLoadingStatus', true);
+
+    axios_based.post('/users', { email, password })
+      .then((res) => {
+        context.commit('updateUsersList', res.data.user);
+        context.commit('setSuccessMessage', res.data.message);
         context.commit('setLoadingStatus', false);
       })
       .catch((e) => {
