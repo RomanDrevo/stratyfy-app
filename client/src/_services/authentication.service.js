@@ -10,18 +10,18 @@ export const getCurrentUser = () => {
   return JSON.parse(user);
 };
 
-const login = (email, password) => axios_based.post('/auth', { email, password }).then((res) => {
-  // store user details and token in local storage to keep user logged in between page refreshes
-  localStorage.setItem('currentUser', JSON.stringify(res.data));
+// const login = (email, password) => axios_based.post('/auth', { email, password }).then((res) => {
+//   // store user details and token in local storage to keep user logged in between page refreshes
+//   localStorage.setItem('currentUser', JSON.stringify(res.data));
+//
+//   return res.data;
+// });
 
-  return res.data;
-});
-
-function logout() {
-  console.log('--logging out !');
-  // remove user from local storage to log user out
-  localStorage.removeItem('currentUser');
-}
+// function logout() {
+//   console.log('--logging out !');
+//   // remove user from local storage to log user out
+//   // localStorage.removeItem('currentUser');
+// }
 
 const showLoginModal = () => console.log('OPENING modal!') || true;
 
@@ -39,8 +39,8 @@ const validateIsLoggedIn = () => {
 
 
 export const authenticationService = {
-  login,
-  logout,
+  // login,
+  // logout,
   getCurrentUser,
   validateIsLoggedIn,
   showLoginModal,

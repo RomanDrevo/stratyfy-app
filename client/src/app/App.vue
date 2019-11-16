@@ -1,15 +1,20 @@
-<style scoped>
-  .xxx {
-    border: 3px dashed red!important;
+<style>
+  .login-form {
+    /*padding: 40px;*/
+  }
+  .v--modal-box{
+    height: auto!important;
+    padding: 40px!important;
   }
 </style>
 
 
 <template>
-    <div class="xxx">
+    <div>
         <nav class="navbar navbar-expand navbar-dark bg-dark">
             <div class="navbar-nav">
                 <router-link to="/" class="nav-item nav-link">Home</router-link>
+                <div @click="logout" class="nav-item nav-link">Logout</div>
 <!--                <a @click="logout" class="nav-item nav-link">Logout</a>-->
             </div>
         </nav>
@@ -18,6 +23,10 @@
                 <div class="row">
                     <div class="col-sm-6 offset-sm-3">
                         <router-view></router-view>
+                      <button @click="changeModalState">Toggle true</button>
+                      {{$store.state.counter}}
+                      {{$store.state.isTrue}}
+                      <button @click="increment">+</button>
                     </div>
                 </div>
             </div>
@@ -25,9 +34,9 @@
 
       <modal name="login-modal" :draggable="false" :clickToClose="false">
         <h2>Login</h2>
-        <form @submit.prevent="onSubmit">
+        <form class="login-form" @submit.prevent="onSubmit">
           <div  class="form-group">
-            <label for="username">Username</label>
+            <label htmlFor="username">Username</label>
             <input
               type="text"
               v-model.trim="$v.username.$model"
@@ -56,15 +65,14 @@
             </div>
           </div>
           <div class="form-group">
-            <button class="btn btn-primary" :disabled="loading">
-              <span class="spinner-border spinner-border-sm" v-show="loading"></span>
+            <button class="btn btn-primary" :disabled="$store.state.loading">
+              <span class="spinner-border spinner-border-sm" v-show="$store.state.loading"></span>
               <span>Login</span>
             </button>
           </div>
-          <div v-if="$store.state.error" class="alert alert-danger">{{error}}</div>
+          <div v-if="$store.state.error" class="alert alert-danger">{{$store.state.error}}</div>
         </form>
 
-<!--        <button @click="login('user@lala.com', '1234')">Login x</button>-->
 
       </modal>
 
@@ -74,23 +82,23 @@
 
 <script>
 import { required } from 'vuelidate/lib/validators';
-import { mapActions } from 'vuex';
-import { authenticationService } from '@/_services';
+import { mapActions, mapGetters } from 'vuex';
+// import { authenticationService } from '@/_services';
 import { router } from '@/_helpers';
 
 export default {
   name: 'app',
   data() {
     return {
-      currentUser: null,
+      currentUser: this.$store.state.currUser,
       username: '',
       password: '',
       submitted: false,
-      loading: false,
+      // loading: false,
       returnUrl: '',
-      error: this.$store.state.error,
+      // error: this.$store.state.error,
       interval: null,
-      isLoggedIn: this.$store.state.isLoggedIn,
+      // isLoggedIn: this.$store.state.isLoggedIn,
     };
   },
   validations: {
@@ -101,28 +109,52 @@ export default {
     isAdmin() {
       return this.currentUser && this.currentUser.isAdmin;
     },
+    isLoggedIn() {
+      return this.$store.state.isLoggedIn;
+    },
+    ...mapGetters(['isTrue', 'doubbleCounter'])
+    // isTrue() {
+    //   return this.$store.state.isTrue;
+    // },
   },
-  created() {
+  mounted() {
     // const isLoggedIn = authenticationService.validateIsLoggedIn();
 
-    setTimeout(() => {
-      if (!this.isLoggedIn) {
-        this.show();
-      }
-    }, 100);
+    if (!this.$store.state.isLoggedIn && this.$modal) {
+      this.show();
+    } else {
+      this.hide();
+    }
+    // setInterval(() => {
+    //   if (!this.currentUser) {
+    //     this.show();
+    //   }
+    // }, 200);
 
-    this.interval = setInterval(authenticationService.validateIsLoggedIn, 3000);
-    setTimeout(authenticationService.logout, 15 * 1000);
+    // this.interval = setInterval(authenticationService.validateIsLoggedIn, 3000);
+  },
+  updated() {
+    // const user = localStorage.getItem('currentUser');
+
+    if (!this.$store.state.isLoggedIn && this.$modal) {
+      console.log('here1');
+
+      this.show();
+    } else {
+      console.log('here2');
+      this.hide();
+    }
   },
   methods: {
     ...mapActions([
       'openLoginModal',
       'closeLoginModal',
       'login',
+      'logout',
+      // 'toggleTrue'
     ]),
-    logout() {
-      authenticationService.logout();
-      router.push('/login');
+    changeModalState () {
+      this.$store.commit('toggleTrue')
     },
     onSubmit() {
       this.submitted = true;
@@ -133,20 +165,9 @@ export default {
         return;
       }
 
-      this.loading = true;
       this.login({ email: this.username, password: this.password });
-      // .then((res) => {
-      //   if (res) {
-      //     this.loading = false;
-      //     this.username = '';
-      //     this.password = '';
-      //     this.hide();
-      //   }
-      // },
-      // (error) => {
-      //   this.error = error;
-      //   this.loading = false;
-      // });
+
+      // setTimeout(this.logout, 5 * 1000);
     },
     show() {
       this.$modal.show('login-modal');
@@ -154,11 +175,12 @@ export default {
     hide() {
       this.$modal.hide('login-modal');
     },
+    increment(){
+      this.$store.commit('increment')
+    }
   },
   destroyed() {
     clearInterval(this.interval);
   },
 };
 </script>
-
-

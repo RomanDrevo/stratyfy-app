@@ -6,7 +6,7 @@
         <div>
 
             <div class="form-group">
-                <button @click="show" class="btn btn-primary">
+                <button class="btn btn-primary">
                     <span>A. Dumb button for all users</span>
                 </button>
                 <button @click="getToCrud" class="btn btn-primary" :disabled="!isAdmin">
@@ -27,7 +27,7 @@ import { router } from '@/_helpers';
 export default {
   data() {
     return {
-      currentUser: authenticationService.getCurrentUser(),
+      // currentUser: authenticationService.getCurrentUser(),
       userFromApi: null,
       // interval: null,
       admin: ROLE.admin,
@@ -63,9 +63,9 @@ export default {
     getToCrud() {
       router.push('/users');
     },
-    show() {
-      this.$modal.show('hello-world');
-    },
+    // show() {
+    //   this.$modal.show('hello-world');
+    // },
   },
 };
 </script>

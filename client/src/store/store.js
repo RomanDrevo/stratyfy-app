@@ -6,20 +6,16 @@ import axios_based from '../_helpers/axios-base';
 Vue.use(Vuex);
 
 const state = {
-  isLoginModalOpen: false,
-  isLoggedIn: authenticationService.validateIsLoggedIn(),
+  isLoggedIn: !!localStorage.getItem('currentUser'),
   currUser: null,
   loading: false,
   error: null,
+  localStorageUser: null,
+  isTrue: true,
+  counter: 0,
 };
 
 const mutations = {
-  openLoginModal(state) {
-    state.isLoginModalOpen = true;
-  },
-  closeLoginModal(state) {
-    state.isLoginModalOpen = false;
-  },
   setUser(state, payload) {
     state.user = payload;
   },
@@ -29,11 +25,22 @@ const mutations = {
   setError(state, payload) {
     state.error = payload;
   },
+  setLoginStatus(state, payload) {
+    console.log('payload: ', payload);
+    state.isLoggedIn = payload;
+  },
+  toggleTrue: (state) => {
+    console.log('---here!');
+    state.isTrue = !state.isTrue;
+    console.log('---state isTrue: ', state.isTrue);
+  },
+  increment: (state) => {
+    state.counter++;
+  },
 };
 
 const actions = {
-  openLoginModal: ({ commit }) => commit('openLoginModal'),
-  closeLoginModal: ({ commit }) => commit('closeLoginModal'),
+
   login(context, data) {
     const { email, password } = data;
 
@@ -46,8 +53,9 @@ const actions = {
       // store user details and token in local storage to keep user logged in between page refreshes
         localStorage.setItem('currentUser', JSON.stringify(res.data));
         context.commit('setUser', res.data);
+        localStorage.setItem('currentUser', JSON.stringify(res.data));
         context.commit('setLoadingStatus', false);
-      // return res.data;
+        context.commit('setLoginStatus', true);
       })
       .catch((e) => {
         console.log('--e: ', e);
@@ -58,10 +66,30 @@ const actions = {
         context.commit('setLoadingStatus', false);
       });
   },
+
+  logout(context) {
+    context.commit('setLoadingStatus', true);
+    localStorage.removeItem('currentUser');
+    context.commit('setLoginStatus', false);
+    console.log('isLoggedIn: ', state.isLoggedIn);
+    context.commit('setLoadingStatus', false);
+  },
+
+  // toggleTrue(context) {
+  //   console.log("666");
+  //   // context.commit('toggleTrue');
+  //   state.isTrue = !state.isTrue;
+  // },
+};
+
+const getters = {
+  isTrue: state => state.isTrue,
+  doubbleCounter: state => state.counter * 2,
 };
 
 export default new Vuex.Store({
   state,
   mutations,
   actions,
+  getters,
 });
