@@ -23,9 +23,9 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import { ROLE } from '../../_helpers/role';
 import { router } from '@/_helpers';
-import { mapGetters } from 'vuex';
 
 
 export default {
