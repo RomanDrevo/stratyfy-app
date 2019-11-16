@@ -144,7 +144,7 @@ export default {
 
       this.login({ email: this.username, password: this.password });
 
-      // setTimeout(this.logout, 5 * 1000);
+      setTimeout(this.logout, 60 * 1000);
     },
     show() {
       this.$modal.show('login-modal');

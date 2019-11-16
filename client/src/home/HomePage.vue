@@ -6,10 +6,14 @@
         <div>
 
             <div class="form-group">
-                <button class="btn btn-primary">
+                <button class="btn btn-primary btn-sm">
                     <span>A. Dumb button for all users</span>
                 </button>
-                <button @click="getToCrud" class="btn btn-primary" :disabled="!currentUser.isAdmin">
+                <button
+                  @click="getToCrud"
+                  class="btn btn-primary btn-sm"
+                  :disabled="!currentUser.isAdmin"
+                >
                     <span>B. Get to CRUD (admin only)</span>
                 </button>
             </div>
@@ -33,23 +37,6 @@ export default {
       user: ROLE.user,
     };
   },
-
-  created() {
-
-    // redirect to home if already logged in
-    // if (authenticationService.currentUserValue) {
-    //   return router.push('/');
-    // }
-    //
-    // // get return url from route parameters or default to '/'
-    // this.returnUrl = this.$route.query.returnUrl || '/';
-
-    // this.interval = setInterval(authenticationService.validateIsLoggedIn, 3000);
-    // // setTimeout(authenticationService.logout, 60 * 1000);
-  },
-  // destroyed() {
-  //   clearInterval(this.interval);
-  // },
   computed: {
     ...mapGetters(['loading', 'error', 'currentUser']),
     role() {
