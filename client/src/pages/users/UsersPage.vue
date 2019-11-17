@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="currentUser">
         <h1>Users</h1>
         <p>Your role is: <strong>{{role}}</strong>.</p>
         <p>This page can be accessed by admin only.</p>
@@ -10,10 +10,10 @@
                 <li class="list-group-item" v-for="user in usersList">
                   <div>{{user.email}}</div>
                   <div>
-                    <button @click="selectUser(user)" type="button" class="btn btn-info btn-sm">
+                    <button @click="selectUser(user)" type="button" class="btn edit btn-sm">
                       Edit
                     </button>
-                    <button @click="deleteUser(user)" type="button" class="btn btn-danger btn-sm">
+                    <button @click="deleteUser(user)" type="button" class="btn remove btn-sm">
                       Remove
                     </button>
                   </div>
@@ -85,7 +85,7 @@ export default {
     username: { required },
     password: { required },
   },
-  created() {
+  mounted() {
     if (this.currentUser) {
       this.fetchUsers(this.currentUser);
     }
@@ -153,5 +153,11 @@ export default {
     display: flex;
     justify-content: space-between;
     margin-top: 10px;
+  }
+  .edit{
+    color: green;
+  }
+  .remove{
+    color: red;
   }
 </style>

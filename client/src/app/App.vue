@@ -85,6 +85,7 @@ export default {
       password: '',
       submitted: false,
       interval: null,
+      logoutTimer: 15 * 1000,
     };
   },
   validations: {
@@ -105,12 +106,18 @@ export default {
     } else {
       this.hide();
     }
+    if (this.currentUser) {
+      setTimeout(this.logout, this.logoutTimer);
+    }
   },
   updated() {
     if (!this.$store.state.isLoggedIn && this.$modal) {
       this.show();
     } else {
       this.hide();
+    }
+    if (this.currentUser) {
+      setTimeout(this.logout, this.logoutTimer);
     }
   },
   methods: {
@@ -129,7 +136,7 @@ export default {
 
       this.login({ email: this.username, password: this.password });
 
-      setTimeout(this.logout, 60 * 1000);
+      // setTimeout(this.logout, 60 * 1000);
     },
     show() {
       this.$modal.show('login-modal');

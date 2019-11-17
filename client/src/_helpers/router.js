@@ -18,12 +18,14 @@ export const router = new Router({
       path: '/users',
       component: UsersPage,
       beforeEnter(to, from, next) {
-        if (!store.state.currUser.isAdmin) {
-          next({
-            name: '/',
-          });
+        if (!store.state.currUser) next({ name: '/' });
+
+        next({ path: '/' });
+
+        if (store.state.currUser && !store.state.currUser.isAdmin) {
+          next({ path: '/' });
         } else {
-          next();
+          next({ path: '/' });
         }
       },
     },

@@ -1,10 +1,13 @@
 <template>
-    <div v-if="currentUser">
-        <h1>Home</h1>
-        <p>Your role is: <strong>{{role}}</strong>.</p>
-        <p>This page can be accessed by all authenticated users.</p>
-        <div>
+    <div>
+      <div v-if="!currentUser">
+        You need to log in to see the content.
+      </div>
 
+        <div v-if="currentUser">
+          <h1>Home</h1>
+          <p>Your role is: <strong>{{role}}</strong>.</p>
+          <p>This page can be accessed by all authenticated users.</p>
             <div class="form-group">
                 <button class="btn btn-primary btn-sm">
                     <span>A. Dumb button for all users</span>
